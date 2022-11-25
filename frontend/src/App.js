@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import ResetPassword from "./components/ResetPassword";
 import Admin from "./components/Admin";
+import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
+import Application from "./components/Application";
 
 function App() {
   return (
@@ -12,9 +15,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/applicant/profile" element={<Profile />} />
+          <Route path="/apply" element={<Application />} />
         </Routes>
       </Router>
     </div>

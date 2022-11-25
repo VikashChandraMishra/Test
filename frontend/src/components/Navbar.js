@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+
+    const logout = () => {
+        localStorage.removeItem('authToken')
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-light">
@@ -20,6 +25,11 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/reset-password">Reset Password</Link>
                             </li>
+                            {
+                                localStorage.getItem('authToken') && <li className="nav-item">
+                                    <Link className="nav-link" to="/" onClick={logout}>Logout</Link>
+                                </li>
+                            }
                         </ul>
 
                     </div>

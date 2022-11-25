@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const applicantSchema = new Schema({
     firstname: {
         type: String,
         required: true
@@ -17,7 +17,7 @@ const userSchema = new Schema({
     },
 
     dob: {
-        type: Date,
+        type: String,
         required: true
     },
 
@@ -68,7 +68,7 @@ const userSchema = new Schema({
     },
     
     PwBD_UDID: {
-        type: Number
+        type: Number,
     },
 
     PwBD_category: {
@@ -82,6 +82,6 @@ const userSchema = new Schema({
     }
 });
 
-const User = mongoose.model('user', userSchema);
+const Applicant = mongoose.model('applicant', applicantSchema);
 
-module.exports = User;
+module.exports = Applicant;

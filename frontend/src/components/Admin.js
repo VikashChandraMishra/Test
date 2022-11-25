@@ -13,7 +13,7 @@ const Admin = () => {
 
         const { username, password } = admin;
 
-        const response = await fetch('http://127.0.0.1:5000/api/auth/admin-login', {
+        const response = await fetch('http://127.0.0.1:5000/api/auth/admin/login', {
             method: 'POST',
 
             headers: {
@@ -26,8 +26,7 @@ const Admin = () => {
         const json = await response.json();
 
         if (json.success === true && json.message === 'admin verified') {
-            localStorage.setItem('user', admin);
-            navigate('/');
+            navigate('/admin/dashboard');
         }
         else setIsInvalid(true);
 

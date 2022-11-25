@@ -1,29 +1,64 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+
+    const navigate = useNavigate(null);
+
+    const [applicant, setApplicant] = useState({ "registrationId": "", "password": "" })
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const { registrationId, password } = applicant;
+
+        const response = await fetch('http://127.0.0.1:5000/api/auth/applicant/login', {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({ registrationId, password })
+        })
+
+        const json = await response.json();
+        if (json.success && json.authToken) {
+            localStorage.setItem('authToken', json.authToken)
+            navigate('/applicant/profile');
+        }
+        else alert("Invalid credentials!");
+
+        setApplicant({ "registrationId": "", "password": "" });
+    }
+
+    const onChange = (e) => {
+        setApplicant({ ...applicant, [e.target.name]: e.target.value });
+    }
+
+
     return (
         <div className="container d-flex justify-content-center">
             <div className='card col-4 my-4'>
                 <p className="card-header text-center">Login</p>
                 <div className="card-body text-center">
-                    <form>
-
+                    <form className="form bg-light py-1 px-1" id="login-form" onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label htmlFor="registrationId" className="form-label">
                                 <strong>Registration ID</strong>
                             </label>
-                            <input type="text" className="form-control" id='registrationId' name='registrationId' />
+                            <input type="text" className="form-control" id='registrationId' name='registrationId' value={applicant.registrationId} onChange={onChange} required />
                         </div>
 
                         <div className='form-group'>
                             <label htmlFor="password" className="form-label">
                                 <strong>Password</strong>
                             </label>
-                            <input type="password" className="form-control" id='password' name='password' />
+                            <input type="password" className="form-control" id='password' name='password' value={applicant.password} onChange={onChange} required />
                         </div>
 
                         <div className='form-group'>
-                            <input type="submit" className="btn btn-success btn-sm my-3" id='submit' name='submit' value='Submit' />
+                            <button type="submit" className="btn btn-success btn-sm my-3" >Submit</button>
                         </div>
 
                     </form>

@@ -9,6 +9,10 @@ const Profile = () => {
 
     const [status, setStatus] = useState({ "id": "", "status": "", "remark": "" });
 
+    const printPDF = () => {
+        navigate('/printPDF');
+    }
+
     useEffect(() => {
 
         if (localStorage.getItem('authToken')) {
@@ -163,7 +167,7 @@ const Profile = () => {
                         <div className="col-3">{status.status ? status.status : 'NA'}</div>
                         <div className="col-3">{status.remark ? status.remark : 'NA'}</div>
                         <div className="col-1">{
-                            <button className="btn btn-success" disabled={!status.id}>Print</button>
+                            <button className="btn btn-success" disabled={!status.id} onClick={printPDF}>Print</button>
                         }</div>
                     </div>
                 </div>

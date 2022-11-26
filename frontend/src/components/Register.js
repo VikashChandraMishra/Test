@@ -94,7 +94,7 @@ const Register = () => {
                                         <option> -- select an option -- </option>
                                         <option value="UR">UR</option>
                                         <option value="SC">SC</option>
-                                        <option value="OBC">OBC/MOBC</option>
+                                        <option value="OBC/MOBC">OBC/MOBC</option>
                                         <option value="ST(P)">ST(P)</option>
                                         <option value="ST(H)">ST(H)</option>
                                         <option value="EWS">EWS</option>

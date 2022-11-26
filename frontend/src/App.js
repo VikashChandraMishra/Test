@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import Application from "./components/Application";
 import ImageUpload from "./components/ImageUpload";
+import PrintPDF from "./components/PrintPDF";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/applicant/profile" element={<Profile />} />
           <Route path="/apply" element={<Application />} />
           <Route path="/upload" element={<ImageUpload />} />
+          <Route path="/printPDF" element={<PrintPDF />} />
         </Routes>
       </Router>
     </div>

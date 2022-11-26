@@ -29,7 +29,7 @@ const Application = () => {
         const json = await response.json();
 
         if (json.success && json.applicant) {
-          document.getElementById('name').value = json.applicant.firstname + json.applicant.middlename + json.applicant.lastname;
+          document.getElementById('name').value = json.applicant.firstname + ' ' + json.applicant.middlename + ' ' + json.applicant.lastname;
           document.getElementById('dob').value = json.applicant.dob;
           document.getElementById('email').value = json.applicant.email;
           document.getElementById('mobile').value = json.applicant.mobile;
@@ -134,7 +134,7 @@ const Application = () => {
         'authToken': localStorage.getItem('authToken'),
       },
 
-      body: JSON.stringify({ correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, research_papers })
+      body: JSON.stringify({ correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, supervision_experience, research_papers })
     })
 
     const json = await response.json();

@@ -1,58 +1,109 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AcademicExp from "./ApplicantDetails/AcademicExp";
+import Education from "./ApplicantDetails/Education";
+import IndustryExp from "./ApplicantDetails/IndustryExp";
+import PGTeachingExp from "./ApplicantDetails/PGTeachingExp";
+import ResearchPapers from "./ApplicantDetails/ResearchPapers";
+import SupervisionExp from "./ApplicantDetails/SupervisionExp";
+import UGTeachingExp from "./ApplicantDetails/UGTeachingExp";
+import '../../src/styles/table.css';
+
 const PrintPDF = () => {
+
+    const navigate = useNavigate(null);
+
+    const [generalInformation, setGeneralInformation] = useState([]);
+    const [educationalQualifications, setEducationalQualifications] = useState([]);
+    const [academicExperiences, setAcademicExperiences] = useState([]);
+    const [industryExperiences, setIndustryExperiences] = useState([]);
+    const [ugTeachingExperiences, setUgTeachingExperiences] = useState([]);
+    const [pgTeachingExperiences, setPgTeachingExperiences] = useState([]);
+    const [supervisionExperiences, setSupervisionExperiences] = useState([]);
+    const [researchPapers, setResearchPapers] = useState([]);
+
+    useEffect(() => {
+
+        if (localStorage.getItem('authToken')) {
+            const fetchData = async () => {
+                const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-application-data', {
+                    method: 'GET',
+
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'authToken': localStorage.getItem('authToken'),
+                    },
+
+                })
+
+                const json = await response.json();
+
+                if (json.success) {
+                    document.getElementById('name').innerHTML = json.applicant.firstname + json.applicant.middlename + json.applicant.lastname;
+                    document.getElementById('dob').innerHTML = json.applicant.dob;
+                    document.getElementById('email').innerHTML = json.applicant.email;
+                    document.getElementById('mobile').innerHTML = json.applicant.mobile;
+
+                    setGeneralInformation(json.application.general_information);
+                    setEducationalQualifications(json.application.educational_qualification);
+                    setAcademicExperiences(json.application.academic_experience);
+                    setIndustryExperiences(json.application.industry_experience);
+                    setUgTeachingExperiences(json.application.ug_teaching_experience);
+                    setPgTeachingExperiences(json.application.pg_teaching_experience);
+                    setSupervisionExperiences(json.application.supervision_experience);
+                    setResearchPapers(json.application.research_papers);
+
+                    // window.print();
+
+                }
+                else navigate('/');
+
+            }
+
+            fetchData();
+        } else navigate('/');
+        // eslint-disable-next-line
+    }, [])
+
     return (
 
         <div>
-            <div className="col container my-4 text-center" style={{ minWidth: '300px' }}>
-                <div className="card mx-auto">
-                    <p className="card-header">Application</p>
-                    <div className="card-body">
-                        <form className="form bg-light py-1 px-1" encType="multipart/form-data">
-                            <div className="my-4">
-                                <h5>1. General Information</h5>
+            <div className="container my-4 px-3" style={{ minWidth: '300px' }} id="application">
+                <div className="mx-auto">
+                    <h2 className="text-center">Application For Professorship</h2>
+                    <div>
 
-                                <div className="row py-2">
-                                    <div className="col form-group">
-                                        <label>Name of the Applicant</label>
-                                        <input type="text" className="form-control" id="name" disabled />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>Date of Birth</label>
-                                        <input type="date" className="form-control" id="dob" disabled />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>Email</label>
-                                        <input type="email" className="form-control" id="email" disabled />
-                                    </div>
+                        <div className="my-4">
+                            <h5>1. General Information</h5>
+                            <div className="row py-2">
+                                <div className="col-4 d-flex flex-column">
+                                    <span>Name of the Applicant:</span>
+                                    <span>Date of Birth:</span>
+                                    <span>Email:</span>
+                                    <span>Mobile Number:</span>
+                                    <span>Correspondence Address:</span>
+                                    <span>Permanent Address:</span>
                                 </div>
-
-                                <div className="row py-2">
-                                    <div className="col form-group">
-                                        <label>Correspondence Address</label>
-                                        <input type="text" className="form-control" id="correspondence_address" required />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>Permanent Address</label>
-                                        <input type="text" className="form-control" id="permanent_address" required />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>Mobile Number</label>
-                                        <input type="number" className="form-control" id="mobile" required disabled />
-                                    </div>
+                                <div className="col-4 d-flex flex-column">
+                                    <span id="name"></span>
+                                    <span id="dob"></span>
+                                    <span id="email"></span>
+                                    <span id="mobile"></span>
+                                    <span>{generalInformation.correspondence_address}</span>
+                                    <span>{generalInformation.permanent_address}</span>
                                 </div>
-
+                                <div className="col-4 d-flex flex-column">
+                                </div>
                             </div>
 
-                            <div className="my-4">
-                                <h5>2. Educational Qualification</h5>
+                        </div>
 
+                        <div className="my-4">
+                            <h5>2. Educational Qualification</h5>
+                            <div className="row py-2">
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Sl.No.</th>
                                             <th>Qualification</th>
                                             <th>Year/University/Institute/Board</th>
                                             <th>Percentage/Grade</th>
@@ -61,122 +112,18 @@ const PrintPDF = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>i.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="Ph.D" disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>ii.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="Post Graduation, MBA" disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>iii.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="Graduation" disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>iv.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="Higher Secondary(H.S.) Pre Degree Science" disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>v.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="H.S.L.C." disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>vi.</td>
-                                            <td>
-                                                <input type="text" className="form-control edu-degree" value="NET/SLET" disabled />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-grade" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-subjects" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control edu-remarks" />
-                                            </td>
-                                        </tr>
+                                        {educationalQualifications.map((education) => {
+                                            return <Education education={education} key={education._id} />
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            <div className="my-4">
-                                <h5>3. Academic Experience <i>(beginning with the present post/assignment)</i></h5>
-
-                                <table>
+                        <div className="my-4">
+                            <h5>3. Academic Experience <i>(beginning with the present post/assignment)</i></h5>
+                            <div className="row py-2">
+                                <table border={2}>
                                     <thead>
                                         <tr>
                                             <th>Name of the post/ dates of joining and leaving</th>
@@ -188,77 +135,22 @@ const PrintPDF = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <input type="text" className="form-control acad-post" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-organization" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-desc" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-spec" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-exp" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="text" className="form-control acad-post" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-organization" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-desc" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-spec" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-exp" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="text" className="form-control acad-post" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-organization" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-desc" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-duty-spec" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-exp" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control acad-remarks" />
-                                            </td>
-                                        </tr>
+                                        {academicExperiences.map((experience) => {
+                                            return <AcademicExp experience={experience} key={experience._id} />
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            <div className="my-4">
-                                <h5>4. Professional/ Industry Experience <i>(On full time basis)</i></h5>
 
-                                <table>
+                        <div className="my-4">
+                            <h5>4. Professional/ Industry Experience <i>(On full time basis)</i></h5>
+
+                            <div className="row py-2">
+                                <table border={2}>
                                     <thead>
                                         <tr>
-                                            <th rowSpan={2}>Sl.No.</th>
                                             <th rowSpan={2}>Post</th>
                                             <th rowSpan={2}>Organization</th>
                                             <th colSpan={2}>Duration</th>
@@ -271,281 +163,108 @@ const PrintPDF = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {industryExperiences.map((experience) => {
+                                            return <IndustryExp experience={experience} key={experience._id} />
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div className="my-4">
+                            <h5>5. Teaching Experience <i>(Please list courses taught at different levels)</i></h5>
+
+                            <div className="row py-2">
+                                <h5>A. Undergraduate Level</h5>
+                                <table border={2}>
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                i.
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-post" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-organization" />
-                                            </td>
-                                            <td>
-                                                <input type="date" className="form-control pro-begin" />
-                                            </td>
-                                            <td>
-                                                <input type="date" className="form-control pro-end" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-exp" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-remarks" />
-                                            </td>
+                                            <th>Year</th>
+                                            <th>Title of the course/ number of students</th>
+                                            <th>Core or Elective</th>
+                                            <th>Remarks</th>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                ii.
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-post" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-organization" />
-                                            </td>
-                                            <td>
-                                                <input type="date" className="form-control pro-begin" />
-                                            </td>
-                                            <td>
-                                                <input type="date" className="form-control pro-end" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-exp" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control pro-remarks" />
-                                            </td>
-                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {ugTeachingExperiences.map((experience) => {
+                                            return <UGTeachingExp experience={experience} key={experience._id} />
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
 
-                            <div className="my-4">
-                                <h5>5. Teaching Experience <i>(Please list courses taught at different levels)</i></h5>
+                            <div className="row py-2">
+                                <h5>B. Postgraduate Level</h5>
+                                <table border={2}>
+                                    <thead>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th>Title of the course/ number of students</th>
+                                            <th>PGP/M.Phil/Ph.D/FPM/other</th>
+                                            <th>Core or Elective</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {pgTeachingExperiences.map((experience) => {
+                                            return <PGTeachingExp experience={experience} key={experience._id} />
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
 
-                                <div className="my-4">
-                                    <h5>A. Undergraduate Level</h5>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Sl.No.</th>
-                                                <th>Year</th>
-                                                <th>Title of the course/ number of students</th>
-                                                <th>Core or Elective</th>
-                                                <th>Remarks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    i.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-course" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-subjects" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-remarks" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    ii.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-course" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-subjects" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ug-remarks" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="my-4">
-                                    <h5>B. Postgraduate Level</h5>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Sl.No.</th>
-                                                <th>Year</th>
-                                                <th>Title of the course/ number of students</th>
-                                                <th>PGP/M.Phil/Ph.D/FPM/other</th>
-                                                <th>Core or Elective</th>
-                                                <th>Remarks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    i.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-course" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-degree" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-subjects" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-remarks" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    ii.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-course" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-degree" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-subjects" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control pg-remarks" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="my-4">
-                                    <h5>C. Students Supervised for M.Phil/ Ph.D or FPM Programme</h5>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Sl.No.</th>
-                                                <th>Year</th>
-                                                <th>Number of students who have completed their dissertations - Direct Supervisor</th>
-                                                <th>Number of students who have completed their dissertations - Member of Thesis Commitee</th>
-                                                <th>Remarks</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    i.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-num-ds" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-num-mtc" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-remarks" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    ii.
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-year" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-num-ds" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-num-mtc" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" className="form-control ss-remarks" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div className="row py-2">
+                                <h5>C. Students Supervised for M.Phil/ Ph.D or FPM Programme</h5>
+                                <table border={2}>
+                                    <thead>
+                                        <tr>
+                                            <th>Year</th>
+                                            <th>Number of students who have completed their dissertations - Direct Supervisor</th>
+                                            <th>Number of students who have completed their dissertations - Member of Thesis Commitee</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {supervisionExperiences.map((experience) => {
+                                            return <SupervisionExp experience={experience} key={experience._id} />
+                                        })}
+                                    </tbody>
+                                </table>
                             </div>
 
 
-                            <div className="my-4">
-                                <h5>6. Research Papers/ Publication etc. (Additional pages may be appended)</h5>
-                                <table>
+                        </div>
+
+                        <div className="my-4">
+                            <h5>6. Research Papers/ Publication etc. (Additional pages may be appended)</h5>
+
+                            <div className="row py-2">
+                                <table border={2}>
                                     <thead>
                                         <tr>
-                                            <th>Sl.No.</th>
                                             <th>Subject/ Title of the Research Paper</th>
                                             <th>Published in (Name, year and edition of the Journal, etc.)</th>
                                             <th style={{ width: '330px' }}>Remarks</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                i.
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-title" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-remarks" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                ii.
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-title" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-details" />
-                                            </td>
-                                            <td>
-                                                <input type="text" className="form-control rp-remarks" />
-                                            </td>
-                                        </tr>
+                                        {researchPapers.map((paper) => {
+                                            return <ResearchPapers paper={paper} key={paper._id} />
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            <div>
-                                <h5>7. Declaration</h5>
+                        <div>
+                            <h5>7. Declaration</h5>
 
-                                <input type="checkbox" onClick={checkReady} />
-                                <span> I, hereby declare that all the statements/particulars made/furnished in this application are true, complete and correct to the best of my knowledge and belief. I also declare and fully understand that in the event of any information furnished being found false or incorrect at any stage, my application/candidature is liable to be summarily rejected and if I am already appointed,  my services are liable to be terminated without any notice from the post.</span>
+                            <p> I, hereby declare that all the statements/particulars made/furnished in this application are true, complete and correct to the best of my knowledge and belief. I also declare and fully understand that in the event of any information furnished being found false or incorrect at any stage, my application/candidature is liable to be summarily rejected and if I am already appointed,  my services are liable to be terminated without any notice from the post.</p>
 
-                            </div>
-
-                            <div className="my-4">
-                                <button className="btn btn-success" onClick={handleSubmit} disabled={!isReady} >Submit</button>
-                            </div>
-
-                        </form>
+                        </div>
 
                     </div>
-
                 </div>
             </div>
         </div>

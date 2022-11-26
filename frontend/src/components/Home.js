@@ -76,8 +76,6 @@ const Home = () => {
                             </div>
                         </div>
                         <center>
-                            <Link to="/Instructions.pdf">Form Fillup Instructions Manual</Link>
-                            <br />
                             <small className="text-danger">For any queries please contact us at admin@asrlm-recruitment.in</small>
                         </center>
                     </div>

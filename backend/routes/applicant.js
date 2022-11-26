@@ -106,10 +106,10 @@ router.put('/reset-password', async (req, res) => {
 
 
 router.get('/fetch-data', fetchApplicant, async (req, res) => {
-
     try {
         let id = req.id;
         const applicant = await Applicant.findById(id).select("-password");
+        console.log(applicant)
         res.json({ "success": true, "applicant": applicant });
     }
     catch (error) {
@@ -170,6 +170,19 @@ router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     try {
         const id = await Application.findOne({applicant: req.id}).select("_id");
         res.json({ "success": true, "id": id._id, "status": "Submitted", "remark": "Application Submitted Successfully" });
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error!");
+    }
+})
+
+router.get('/fetch-application-data', fetchApplicant, async (req, res) => {
+    try {
+        const applicant = await Applicant.findOne({_id: req.id});
+        const application = await Application.findOne({applicant: req.id});
+        console.log(req.id)
+        res.json({ "success": true, "applicant": applicant,"application": application });
     }
     catch (error) {
         console.error(error.message);

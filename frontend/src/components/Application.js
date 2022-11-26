@@ -1,28 +1,78 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Application = () => {
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate(null);
+
+  const [isReady, setIsReady] = useState(false);
+
+  const checkReady = () => {
+    if (isReady === false) setIsReady(true);
+    else if (isReady === true) setIsReady(false);
+  }
+
+  useEffect(() => {
+
+    if (localStorage.getItem('authToken')) {
+      const fetchData = async () => {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-data', {
+          method: 'GET',
+
+          headers: {
+            'Content-Type': 'application/json',
+            'authToken': localStorage.getItem('authToken'),
+          },
+
+        })
+
+        const json = await response.json();
+
+        if (json.success && json.applicant) {
+          document.getElementById('name').value = json.applicant.firstname + json.applicant.middlename + json.applicant.lastname;
+          document.getElementById('dob').value = json.applicant.dob;
+          document.getElementById('email').value = json.applicant.email;
+          document.getElementById('mobile').value = json.applicant.mobile;
+        }
+        else navigate('/');
+
+      }
+
+      fetchData();
+    } else navigate('/');
+    // eslint-disable-next-line
+  }, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let name = document.getElementById('name');
-    let dob = document.getElementById('dob');
-    let email = document.getElementById('email');
-    let correspondence_address = document.getElementById('correspondence_address');
-    let permanent_address = document.getElementById('permanent_address');
-    let mobile = document.getElementById('mobile');
-
+    let correspondence_address = document.getElementById('correspondence_address').value;
+    let permanent_address = document.getElementById('permanent_address').value;
 
     let eduDegree = document.getElementsByClassName('edu-degree');
     let eduDetails = document.getElementsByClassName('edu-details');
     let eduGrade = document.getElementsByClassName('edu-grade');
     let eduSubjects = document.getElementsByClassName('edu-subjects');
     let eduRemarks = document.getElementsByClassName('edu-remarks');
+    let educational_qualification = [];
+
+    for (let i = 0; i < 5; i++) {
+      educational_qualification.push({ degree: eduDegree[i].value, details: eduDetails[i].value, grade: eduGrade[i].value, subjects: eduSubjects[i].value, remarks: eduRemarks[i].value, })
+    }
 
     let acadPost = document.getElementsByClassName('acad-post');
     let acadOrganization = document.getElementsByClassName('acad-organization');
     let acadDutyDesc = document.getElementsByClassName('acad-duty-desc');
-    let acadSpecDuty = document.getElementsByClassName('acad-spec-duty');
+    let acadSpecDuty = document.getElementsByClassName('acad-duty-spec');
     let acadExp = document.getElementsByClassName('acad-exp');
     let acadRemarks = document.getElementsByClassName('acad-remarks');
+    let academic_experience = [];
+
+    console.log(acadPost[0].value)
+
+    for (let i = 0; i < 3; i++) {
+      academic_experience.push({ post: acadPost[0].value, organization: acadOrganization[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
+    }
 
     let proPost = document.getElementsByClassName('pro-post');
     let proOrganization = document.getElementsByClassName('pro-organization');
@@ -30,27 +80,69 @@ const Application = () => {
     let proEnd = document.getElementsByClassName('pro-end');
     let proExp = document.getElementsByClassName('pro-exp');
     let proRemarks = document.getElementsByClassName('pro-remarks');
+    let industry_experience = [];
+
+    for (let i = 0; i < 2; i++) {
+      industry_experience.push({ post: proPost[i].value, organization: proOrganization[i].value, begin_date: proBegin[i].value, end_date: proEnd[i].value, experience: proExp[i].value, remarks: proRemarks[i].value, })
+    }
 
     let ugYear = document.getElementsByClassName('ug-year');
-    let ugTitle = document.getElementsByClassName('ug-title');
+    let ugCourse = document.getElementsByClassName('ug-course');
     let ugSubjects = document.getElementsByClassName('ug-subjects');
     let ugRemarks = document.getElementsByClassName('ug-remarks');
+    let ug_teaching_experience = [];
+
+    for (let i = 0; i < 2; i++) {
+      ug_teaching_experience.push({ year: ugYear[i].value, course: ugCourse[i].value, subjects: ugSubjects[i].value, remarks: ugRemarks[i].value, })
+    }
 
     let pgYear = document.getElementsByClassName('pg-year');
-    let pgTitle = document.getElementsByClassName('pg-title');
+    let pgCourse = document.getElementsByClassName('pg-course');
     let pgSubjects = document.getElementsByClassName('pg-subjects');
-    let pgdegree = document.getElementsByClassName('pg-degree');
+    let pgDegree = document.getElementsByClassName('pg-degree');
     let pgRemarks = document.getElementsByClassName('pg-remarks');
+    let pg_teaching_experience = [];
+
+    for (let i = 0; i < 2; i++) {
+      pg_teaching_experience.push({ year: pgYear[i].value, course: pgCourse[i].value, subjects: pgSubjects[i].value, degree: pgDegree[i].value, remarks: pgRemarks[i].value, })
+    }
 
     let ssYear = document.getElementsByClassName('ss-year');
     let ss_num_ds = document.getElementsByClassName('ss-num-ds');
     let ss_num_mtc = document.getElementsByClassName('ss-num-mtc');
     let ssRemarks = document.getElementsByClassName('ss-remarks');
+    let supervision_experience = [];
 
-    
+    for (let i = 0; i < 2; i++) {
+      supervision_experience.push({ year: ssYear[i].value, number_DS: ss_num_ds[i].value, number_MTC: ss_num_mtc[i].value, remarks: ssRemarks[i].value, })
+    }
+
     let rpTitle = document.getElementsByClassName('rp-title');
     let rpDetails = document.getElementsByClassName('rp-details');
     let rpRemarks = document.getElementsByClassName('rp-remarks');
+    let research_papers = [];
+
+    for (let i = 0; i < 2; i++) {
+      research_papers.push({ title: rpTitle[i].value, details: rpDetails[i].value, remarks: rpRemarks[i].value, })
+    }
+
+    const response = await fetch('http://127.0.0.1:5000/api/applicant/submit-form', {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+        'authToken': localStorage.getItem('authToken'),
+      },
+
+      body: JSON.stringify({ correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, research_papers })
+    })
+
+    const json = await response.json();
+
+    if (json.success === true && json.message === 'application successfully submitted') {
+      navigate('/upload');
+    }
+    else alert("Application submitted with faulty data!");
 
   }
 
@@ -94,7 +186,7 @@ const Application = () => {
 
                   <div className="col form-group">
                     <label>Mobile Number</label>
-                    <input type="number" className="form-control" id="mobile" required />
+                    <input type="number" className="form-control" id="mobile" required disabled />
                   </div>
                 </div>
 
@@ -336,10 +428,10 @@ const Application = () => {
                         <input type="text" className="form-control pro-organization" />
                       </td>
                       <td>
-                        <input type="text" className="form-control pro-begin" />
+                        <input type="date" className="form-control pro-begin" />
                       </td>
                       <td>
-                        <input type="text" className="form-control pro-end" />
+                        <input type="date" className="form-control pro-end" />
                       </td>
                       <td>
                         <input type="text" className="form-control pro-exp" />
@@ -359,10 +451,10 @@ const Application = () => {
                         <input type="text" className="form-control pro-organization" />
                       </td>
                       <td>
-                        <input type="text" className="form-control pro-begin" />
+                        <input type="date" className="form-control pro-begin" />
                       </td>
                       <td>
-                        <input type="text" className="form-control pro-end" />
+                        <input type="date" className="form-control pro-end" />
                       </td>
                       <td>
                         <input type="text" className="form-control pro-exp" />
@@ -399,7 +491,7 @@ const Application = () => {
                           <input type="text" className="form-control ug-year" />
                         </td>
                         <td>
-                          <input type="text" className="form-control ug-title" />
+                          <input type="text" className="form-control ug-course" />
                         </td>
                         <td>
                           <input type="text" className="form-control ug-subjects" />
@@ -416,7 +508,7 @@ const Application = () => {
                           <input type="text" className="form-control ug-year" />
                         </td>
                         <td>
-                          <input type="text" className="form-control ug-title" />
+                          <input type="text" className="form-control ug-course" />
                         </td>
                         <td>
                           <input type="text" className="form-control ug-subjects" />
@@ -451,7 +543,7 @@ const Application = () => {
                           <input type="text" className="form-control pg-year" />
                         </td>
                         <td>
-                          <input type="text" className="form-control pg-title" />
+                          <input type="text" className="form-control pg-course" />
                         </td>
                         <td>
                           <input type="text" className="form-control pg-degree" />
@@ -471,7 +563,7 @@ const Application = () => {
                           <input type="text" className="form-control pg-year" />
                         </td>
                         <td>
-                          <input type="text" className="form-control pg-title" />
+                          <input type="text" className="form-control pg-course" />
                         </td>
                         <td>
                           <input type="text" className="form-control pg-degree" />
@@ -587,24 +679,13 @@ const Application = () => {
               <div>
                 <h5>7. Declaration</h5>
 
-                <input type="checkbox" id="declaration" />
+                <input type="checkbox" onClick={checkReady} />
                 <span> I, hereby declare that all the statements/particulars made/furnished in this application are true, complete and correct to the best of my knowledge and belief. I also declare and fully understand that in the event of any information furnished being found false or incorrect at any stage, my application/candidature is liable to be summarily rejected and if I am already appointed,  my services are liable to be terminated without any notice from the post.</span>
 
               </div>
 
-              <div className="row">
-                <div className="col-5 mx-4 px-4">
-                  <label htmlFor="files" className="form-label">Photo</label>
-                  <input type="file" className="form-control data-input" id="photo" name="photo" required />
-                </div>
-                <div className="col-5 mx-4 px-4">
-                  <label htmlFor="files" className="form-label">Signature</label>
-                  <input type="file" className="form-control data-input" id="signature" name="signature" required />
-                </div>
-              </div>
-
               <div className="my-4">
-                <button className="btn btn-success" onClick={handleSubmit} >Submit</button>
+                <button className="btn btn-success" onClick={handleSubmit} disabled={!isReady} >Submit</button>
               </div>
 
             </form>

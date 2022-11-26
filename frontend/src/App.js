@@ -7,6 +7,7 @@ import Admin from "./components/Admin";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import Application from "./components/Application";
+import ImageUpload from "./components/ImageUpload";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/applicant/profile" element={<Profile />} />
           <Route path="/apply" element={<Application />} />
+          <Route path="/upload" element={<ImageUpload />} />
         </Routes>
       </Router>
     </div>

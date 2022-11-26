@@ -9,24 +9,25 @@ const generalInformationSchema = new Schema({
 });
 
 const educationSchema = new Schema({
-    yop: { type: Number },
-    grade: { type: Number },
+    degree: { type: String },
+    details: { type: String },
+    grade: { type: String },
     subjects: { type: String },
-    remarks: { type: Number },
+    remarks: { type: String },
 });
 
 const academicExperienceSchema = new Schema({
-    posts: {type: String},
-    organisations: {type: String},
-    duties: {type: String},
-    special_duties: {type: String},
-    duration: {type: String},
+    post: {type: String},
+    organization: {type: String},
+    duty: {type: String},
+    special_duty: {type: String},
+    experience: {type: String},
     remarks: {type: String},
 });
 
 const industryExperienceSchema = new Schema({
-    posts: {type: String},
-    organisations: {type: String},
+    post: {type: String},
+    organization: {type: String},
     begin_date: {type: String},
     end_date: {type: String},
     experience: {type: String},
@@ -61,8 +62,16 @@ const researchPaperSchema = new Schema({
     remarks: {type: String},
 });
 
+const photosSchema = new Schema({
+    photo_path: {type: String},
+    signature_path: {type: String},
+});
+
+
 const applicationSchema = new Schema({
 
+    applicant: {type: Schema.Types.ObjectId, ref: 'applicant'},
+    photos: photosSchema,
     general_information: generalInformationSchema,
     educational_qualification: [educationSchema],
     academic_experience: [academicExperienceSchema],

@@ -13,7 +13,7 @@ const fetchApplicant = (req, res, next) => {
         req.id = jwt.verify(token, SECRET_KEY);
         next(); 
     } catch (error) {
-        res.status(401).send({error: "invalid token"});
+        res.send({error: "invalid token"});
     }
 
 } 

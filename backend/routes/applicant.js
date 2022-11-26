@@ -1,12 +1,22 @@
 const express = require('express');
+const router = express.Router();
 const { v4: uuidv4 } = require('uuid')
 const Applicant = require('../models/Applicant');
 const Application = require('../models/Application');
 const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = process.env;
 const fetchApplicant = require('../middleware/fetchApplicant');
-const router = express.Router();
-
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    },
+});
+const upload = multer({ storage: storage });
+const pUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'signature', maxCount: 1 }]);
 
 router.post('/registration', async (req, res) => {
     try {
@@ -109,14 +119,19 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
 })
 
 
-router.post('/submit-form', async (req, res) => {
+router.post('/submit-form', fetchApplicant, async (req, res) => {
     try {
         console.log("object")
         const newApplication = await Application.create({
-
-            general_information: {correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address},
-
-            educational_qualification: [req]
+            applicant: req.id,
+            general_information: { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address },
+            educational_qualification: req.body.educational_qualification,
+            academic_experience: req.body.academic_experience,
+            industry_experience: req.body.industry_experience,
+            ug_teaching_experience: req.body.ug_teaching_experience,
+            pg_teaching_experience: req.body.pg_teaching_experience,
+            supervision_experience: req.body.supervision_experience,
+            research_papers: req.body.research_papers
         });
 
         res.json({ "success": true, "message": "application successfully submitted" })
@@ -127,5 +142,39 @@ router.post('/submit-form', async (req, res) => {
     }
 })
 
+
+router.post('/photo-upload', pUpload, fetchApplicant, async (req, res) => {
+
+    try {
+        const existingApplication = await Application.findOne({ applicant: req.id });
+
+        if (!existingApplication) {
+            return res.status(400).json({ success: false, message: "application does not exist" });
+        } else {
+            existingApplication.photos = { photo_path: 'uploads/' + req.files['photo'][0].filename, signature_path: 'uploads/' + req.files['signature'][0].filename };
+
+            await existingApplication.save();
+
+        }
+
+        res.json({ success: true, "message": "images successfully uploaded" });
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error!");
+    }
+
+})
+
+router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
+    try {
+        const id = await Application.findOne({applicant: req.id}).select("_id");
+        res.json({ "success": true, "id": id._id, "status": "Submitted", "remark": "Application Submitted Successfully" });
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error!");
+    }
+})
 
 module.exports = router;

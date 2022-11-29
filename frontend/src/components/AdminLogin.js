@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Admin = () => {
+const AdminLogin = () => {
 
     const [admin, setAdmin] = useState({ "username": "", "password": "" });
     const [isInvalid, setIsInvalid] = useState(false);
@@ -71,4 +71,4 @@ const Admin = () => {
     )
 }
 
-export default Admin;
+export default AdminLogin;

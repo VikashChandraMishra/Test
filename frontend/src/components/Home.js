@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
+import { useContext } from 'react';
 
 const Home = () => {
 
     const navigate = useNavigate(null);
+    const context = useContext(AuthContext);
+    const { setIsLogged } = context;
 
     const [applicant, setApplicant] = useState({ "registrationId": "", "password": "" })
 
@@ -23,8 +27,9 @@ const Home = () => {
         })
 
         const json = await response.json();
-        if (json.success && json.authToken) {
+        if (json.success) {
             localStorage.setItem('authToken', json.authToken)
+            setIsLogged(true);
             navigate('/applicant/profile');
         }
         else alert("Invalid credentials!");

@@ -181,7 +181,6 @@ router.get('/fetch-application-data', fetchApplicant, async (req, res) => {
     try {
         const applicant = await Applicant.findOne({_id: req.id});
         const application = await Application.findOne({applicant: req.id});
-        console.log(req.id)
         res.json({ "success": true, "applicant": applicant,"application": application });
     }
     catch (error) {

@@ -21,6 +21,15 @@ const PrintPDF = () => {
     const [pgTeachingExperiences, setPgTeachingExperiences] = useState([]);
     const [supervisionExperiences, setSupervisionExperiences] = useState([]);
     const [researchPapers, setResearchPapers] = useState([]);
+    const [images, setImages] = useState({ "photo_path": "", "signature_path": "" });
+
+    const print = () => {
+
+        const printButton = document.getElementById('print-button');
+        printButton.style.visibility = 'hidden';
+        printButton.style.position = 'absolute';
+        window.print();
+    }
 
     useEffect(() => {
 
@@ -39,7 +48,7 @@ const PrintPDF = () => {
                 const json = await response.json();
 
                 if (json.success) {
-                    document.getElementById('name').innerHTML = json.applicant.firstname + json.applicant.middlename + json.applicant.lastname;
+                    document.getElementById('name').innerHTML = json.applicant.firstname + ' ' + json.applicant.middlename + ' ' + json.applicant.lastname;
                     document.getElementById('dob').innerHTML = json.applicant.dob;
                     document.getElementById('email').innerHTML = json.applicant.email;
                     document.getElementById('mobile').innerHTML = json.applicant.mobile;
@@ -52,9 +61,7 @@ const PrintPDF = () => {
                     setPgTeachingExperiences(json.application.pg_teaching_experience);
                     setSupervisionExperiences(json.application.supervision_experience);
                     setResearchPapers(json.application.research_papers);
-
-                    // window.print();
-
+                    setImages(json.application.photos);
                 }
                 else navigate('/');
 
@@ -68,6 +75,9 @@ const PrintPDF = () => {
     return (
 
         <div>
+            <div className="container my-3">
+                <button className="btn btn-success" style={{ width: '100px' }} onClick={print} id="print-button" >Print</button>
+            </div>
             <div className="container my-4 px-3" style={{ minWidth: '300px' }} id="application">
                 <div className="mx-auto">
                     <h2 className="text-center">Application For Professorship</h2>
@@ -92,7 +102,15 @@ const PrintPDF = () => {
                                     <span>{generalInformation.correspondence_address}</span>
                                     <span>{generalInformation.permanent_address}</span>
                                 </div>
-                                <div className="col-4 d-flex flex-column">
+                                <div className="col-4 d-flex flex-row">
+                                    <div className="mx-2 text-center">
+                                        <div>Photo</div>
+                                        <img src={`http://127.0.0.1:5000/${images.photo_path}`} height="80px" width="80px" alt="Unable to display" id="photo" />
+                                    </div>
+                                    <div className="mx-2 text-center">
+                                        <div>Signature</div>
+                                        <img src={`http://127.0.0.1:5000/${images.signature_path}`} height="60px" width="120px" alt="Unable to display" id="signature" />
+                                    </div>
                                 </div>
                             </div>
 

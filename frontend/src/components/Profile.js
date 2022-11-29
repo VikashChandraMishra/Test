@@ -54,7 +54,6 @@ const Profile = () => {
                     const res = await response.json();
 
                     if (res.success) {
-                        console.log("object")
                         setStatus({ "id": res.id, "status": res.status, "remark": res.remark });
                     }
 

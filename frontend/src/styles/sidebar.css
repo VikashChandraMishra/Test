@@ -1,28 +1,27 @@
 #sidebar {
     background-color: #212422;
-    height: 960px;
+    position: absolute;
+    height: 100vh;
 }
 
 #sidebar h3 {
-    color: white;
+    color: black;
 }
 
 
 a {
-    color: white;
+    color: black;
     text-decoration: none;
 }
 
-.option:hover {
-    color: violet;
-}
-
 .option {
-    width: 170px;
+    text-align: center;
+    width: 200px;
     margin: auto;
 }
 
 .option:hover {
+    color: whitesmoke;
     border-radius: 10px;
-    background-color: #66736a;
+    background-color: #b5b19e;
 }

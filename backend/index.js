@@ -9,6 +9,7 @@ const port = 5000;
 connectToMongo();
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(cors());
+app.use('/uploads', express.static('uploads'));
 app.use(express.json()); 
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/applicant', require('./routes/applicant'));

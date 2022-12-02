@@ -1,6 +1,7 @@
 #sidebar {
-    background-color: #212422;
-    position: absolute;
+    background-color: white;
+    border-radius: 30px;
+    width: 180px;
     height: 100vh;
 }
 
@@ -16,12 +17,12 @@ a {
 
 .option {
     text-align: center;
-    width: 200px;
+    width: 150px;
     margin: auto;
 }
 
 .option:hover {
     color: whitesmoke;
     border-radius: 10px;
-    background-color: #b5b19e;
+    background-color: lightblue;
 }

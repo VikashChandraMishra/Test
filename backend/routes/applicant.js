@@ -109,7 +109,6 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
     try {
         let id = req.id;
         const applicant = await Applicant.findById(id).select("-password");
-        console.log(applicant)
         res.json({ "success": true, "applicant": applicant });
     }
     catch (error) {
@@ -121,9 +120,9 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
 
 router.post('/submit-form', fetchApplicant, async (req, res) => {
     try {
-        console.log("object")
         const newApplication = await Application.create({
             applicant: req.id,
+            position: req.body.position,
             general_information: { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address },
             educational_qualification: req.body.educational_qualification,
             academic_experience: req.body.academic_experience,
@@ -134,7 +133,7 @@ router.post('/submit-form', fetchApplicant, async (req, res) => {
             research_papers: req.body.research_papers
         });
 
-        res.json({ "success": true, "message": "application successfully submitted" })
+        res.json({ "success": true, "message": "application successfully submitted", "id": newApplication._id })
 
     } catch (error) {
         console.error(error.message);
@@ -143,10 +142,10 @@ router.post('/submit-form', fetchApplicant, async (req, res) => {
 })
 
 
-router.post('/photo-upload', pUpload, fetchApplicant, async (req, res) => {
+router.post('/photo-upload', pUpload, async (req, res) => {
 
     try {
-        const existingApplication = await Application.findOne({ applicant: req.id });
+        const existingApplication = await Application.findOne({ _id: req.headers.id });
 
         if (!existingApplication) {
             return res.status(400).json({ success: false, message: "application does not exist" });
@@ -168,8 +167,8 @@ router.post('/photo-upload', pUpload, fetchApplicant, async (req, res) => {
 
 router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     try {
-        const id = await Application.findOne({applicant: req.id}).select("_id");
-        res.json({ "success": true, "id": id._id, "status": "Submitted", "remark": "Application Submitted Successfully" });
+        const applications = await Application.find({applicant: req.id}).select("position");
+        res.json({ "success": true, "applications": applications });
     }
     catch (error) {
         console.error(error.message);
@@ -177,10 +176,10 @@ router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     }
 })
 
-router.get('/fetch-application-data', fetchApplicant, async (req, res) => {
+router.post('/fetch-application-data', fetchApplicant, async (req, res) => {
     try {
+        const application = await Application.findOne({_id: req.body.application_id});
         const applicant = await Applicant.findOne({_id: req.id});
-        const application = await Application.findOne({applicant: req.id});
         res.json({ "success": true, "applicant": applicant,"application": application });
     }
     catch (error) {

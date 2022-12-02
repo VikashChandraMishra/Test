@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTable } from 'react-table';
-import '../styles/list.css'
+import '../../styles/list.css'
 
 const Table = (props) => {
 

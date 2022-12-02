@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AcademicExp from "./ApplicantDetails/AcademicExp";
 import Education from "./ApplicantDetails/Education";
 import IndustryExp from "./ApplicantDetails/IndustryExp";
@@ -11,8 +11,11 @@ import '../../src/styles/table.css';
 
 const PrintPDF = () => {
 
+    const location = useLocation();
+
     const navigate = useNavigate(null);
 
+    const [position, setPosition] = useState("");
     const [generalInformation, setGeneralInformation] = useState([]);
     const [educationalQualifications, setEducationalQualifications] = useState([]);
     const [academicExperiences, setAcademicExperiences] = useState([]);
@@ -36,12 +39,14 @@ const PrintPDF = () => {
         if (localStorage.getItem('authToken')) {
             const fetchData = async () => {
                 const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-application-data', {
-                    method: 'GET',
+                    method: 'POST',
 
                     headers: {
                         'Content-Type': 'application/json',
                         'authToken': localStorage.getItem('authToken'),
                     },
+
+                    body: JSON.stringify({"application_id":location.state._id})
 
                 })
 
@@ -53,6 +58,7 @@ const PrintPDF = () => {
                     document.getElementById('email').innerHTML = json.applicant.email;
                     document.getElementById('mobile').innerHTML = json.applicant.mobile;
 
+                    setPosition(json.application.position);
                     setGeneralInformation(json.application.general_information);
                     setEducationalQualifications(json.application.educational_qualification);
                     setAcademicExperiences(json.application.academic_experience);
@@ -80,7 +86,7 @@ const PrintPDF = () => {
             </div>
             <div className="container my-4 px-3" style={{ minWidth: '300px' }} id="application">
                 <div className="mx-auto">
-                    <h2 className="text-center">Application For Professorship</h2>
+                    <h3 className="text-center">Application For The Post Of {position}</h3>
                     <div>
 
                         <div className="my-4">

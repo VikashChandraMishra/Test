@@ -71,6 +71,7 @@ const photosSchema = new Schema({
 const applicationSchema = new Schema({
 
     applicant: {type: Schema.Types.ObjectId, ref: 'applicant'},
+    position: {type: String, required: true},
     photos: photosSchema,
     general_information: generalInformationSchema,
     educational_qualification: [educationSchema],

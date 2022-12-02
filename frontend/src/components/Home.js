@@ -80,9 +80,6 @@ const Home = () => {
                                 <Link to="/reset-password" className="btn btn-primary btn-sm">Reset Password</Link>
                             </div>
                         </div>
-                        <center>
-                            <small className="text-danger">For any queries please contact us at admin@asrlm-recruitment.in</small>
-                        </center>
                     </div>
 
                 </div>

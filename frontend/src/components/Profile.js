@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Status from "./Status";
 
 const Profile = () => {
 
@@ -7,11 +8,7 @@ const Profile = () => {
 
     const [applicant, setApplicant] = useState({ "firstname": "", "middlename": "", "lastname": "", "dob": "", "category": "", "qualification": "", "mobile": 0, "email": "", "gender": "", "registrationId": "", "disabilityPercentage": 0, "PwBD_UDID": 0, "PwBD_category": "", "age": "" })
 
-    const [status, setStatus] = useState({ "id": "", "status": "", "remark": "" });
-
-    const printPDF = () => {
-        navigate('/printPDF');
-    }
+    const [applications, setApplications] = useState([]);
 
     useEffect(() => {
 
@@ -54,7 +51,7 @@ const Profile = () => {
                     const res = await response.json();
 
                     if (res.success) {
-                        setStatus({ "id": res.id, "status": res.status, "remark": res.remark });
+                        setApplications(res.applications);
                     }
 
                 }
@@ -68,7 +65,7 @@ const Profile = () => {
     }, [])
 
     const apply = () => {
-        navigate('/apply')
+        navigate('/positions')
     }
 
     return (
@@ -144,7 +141,7 @@ const Profile = () => {
                         <div className="col-5">
                         </div>
                         <div className="col-4 text-center">
-                            <button className="btn btn-primary" onClick={apply} disabled={status.id} >Apply for Professorship</button>
+                            <button className="btn btn-primary" onClick={apply} >Apply for Positions</button>
                         </div>
                     </div>
 
@@ -160,14 +157,13 @@ const Profile = () => {
                         <strong className="col-3">Remark</strong>
                         <strong className="col-1">Action</strong>
                     </div>
-                    <div className="row text-center py-1 border">
-                        <div className="col-2">{status.id ? status.id : 'NA'}</div>
-                        <div className="col-3">Professor</div>
-                        <div className="col-3">{status.status ? status.status : 'NA'}</div>
-                        <div className="col-3">{status.remark ? status.remark : 'NA'}</div>
-                        <div className="col-1">{
-                            <button className="btn btn-success" disabled={!status.id} onClick={printPDF}>Print</button>
-                        }</div>
+                    <div>
+                        {
+                            applications ?
+                                applications.map((application) => {
+                                    return <Status application={application} key={application._id} />;
+                                }) : 'You have not applied for any positions yet'
+                        }
                     </div>
                 </div>
             </div>

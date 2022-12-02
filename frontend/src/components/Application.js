@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Application = () => {
 
   const navigate = useNavigate(null);
-
+  const location = useLocation();
   const [isReady, setIsReady] = useState(false);
 
   const checkReady = () => {
@@ -126,6 +126,8 @@ const Application = () => {
       research_papers.push({ title: rpTitle[i].value, details: rpDetails[i].value, remarks: rpRemarks[i].value, })
     }
 
+    let position = document.getElementById('position').innerText;
+
     const response = await fetch('http://127.0.0.1:5000/api/applicant/submit-form', {
       method: 'POST',
 
@@ -134,13 +136,13 @@ const Application = () => {
         'authToken': localStorage.getItem('authToken'),
       },
 
-      body: JSON.stringify({ correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, supervision_experience, research_papers })
+      body: JSON.stringify({ position, correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, supervision_experience, research_papers })
     })
 
     const json = await response.json();
 
     if (json.success === true && json.message === 'application successfully submitted') {
-      navigate('/upload');
+      navigate('/upload', {state: {application_id: json.id}});
     }
     else alert("Application submitted with faulty data!");
 
@@ -153,6 +155,7 @@ const Application = () => {
           <p className="card-header">Application</p>
           <div className="card-body">
             <form className="form bg-light py-1 px-1" encType="multipart/form-data">
+              <h4>Position: <span id="position">{location.state.position}</span></h4>
               <div className="my-4">
                 <h5>1. General Information</h5>
 

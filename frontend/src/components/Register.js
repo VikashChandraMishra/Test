@@ -167,11 +167,6 @@ const Register = () => {
                                 <button className="btn btn-success btn-sm px-5" type="submit">Submit</button>
                             </div>
                             <br />
-                            <center>
-                                <small className="text-danger">
-                                    For any queries please contact us at admin@asrlm-recruitment.in
-                                </small>
-                            </center>
                             <br />
                         </form>
                     </div>

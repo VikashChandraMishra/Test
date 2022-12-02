@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ImageUpload = () => {
 
+    const location = useLocation();
     const navigate = useNavigate('null');
     const [photo, setPhoto] = useState({ preview: '', data: '' });
     const [signature, setSignature] = useState({ preview: '', data: '' });
@@ -22,6 +23,7 @@ const ImageUpload = () => {
 
             headers: {
                 'authToken': localStorage.getItem('authToken'),
+                'id': location.state.application_id
             },
 
             body: formData,

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import Sidebar from "./Sidebar";
 import Table from "./Table";
+import Sidebar from "./Sidebar"
 
 const Dashboard = () => {
 
@@ -41,15 +41,19 @@ const Dashboard = () => {
           {
             Header: "LastName",
             accessor: "lastname"
-          },{
+          }, {
             Header: "DOB",
             accessor: "dob"
-          },{
+          }, {
             Header: "Category",
             accessor: "category"
-          },{
+          }, {
             Header: "Qualification",
             accessor: "qualification"
+          },
+          {
+            Header: "Gender",
+            accessor: "gender"
           },
         ]
       },
@@ -58,9 +62,9 @@ const Dashboard = () => {
   );
 
   return (
-    <div>
-      {/* <Sidebar /> */}
-      <Table columns={columns} data={data} />
+    <div className="row bg-light">
+        <Sidebar />
+        <Table columns={columns} data={data} />
     </div>
   )
 }

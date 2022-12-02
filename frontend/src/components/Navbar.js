@@ -1,16 +1,16 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
 
-    const context = useContext(AuthContext);
-    const { isLogged, setIsLogged } = context;
+    const location = useLocation();
 
     const logout = () => {
         localStorage.removeItem('authToken')
-        setIsLogged(false);
     }
+
+    useEffect(() => {
+    }, [location])
 
     return (
         <div>
@@ -23,16 +23,16 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="/">Home</a>
+                                <a className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} aria-current="page" href="/">Home</a>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/register">Register</Link>
+                                <Link className={`nav-link ${location.pathname === '/register' ? 'active' : ''}`} to="/register">Register</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/reset-password">Reset Password</Link>
+                                <Link className={`nav-link ${location.pathname === 'reset-password' ? 'active' : ''}`} to="/reset-password">Reset Password</Link>
                             </li>
                             {
-                                isLogged && <li className="nav-item">
+                                location.pathname !== '/' && location.pathname !== '/reset-password' && location.pathname !== '/register' && <li className="nav-item">
                                     <Link className="nav-link" to="/" onClick={logout}>Logout</Link>
                                 </li>
                             }

@@ -15,7 +15,6 @@ const PrintPDF = () => {
 
     const navigate = useNavigate(null);
 
-    const [position, setPosition] = useState("");
     const [generalInformation, setGeneralInformation] = useState([]);
     const [educationalQualifications, setEducationalQualifications] = useState([]);
     const [academicExperiences, setAcademicExperiences] = useState([]);
@@ -29,9 +28,9 @@ const PrintPDF = () => {
     const print = () => {
 
         const printButton = document.getElementById('print-button');
-        printButton.style.visibility = 'hidden';
-        printButton.style.position = 'absolute';
+        printButton.style.display = 'none';
         window.print();
+        printButton.style.display = 'initial';
     }
 
     useEffect(() => {
@@ -57,8 +56,8 @@ const PrintPDF = () => {
                     document.getElementById('dob').innerHTML = json.applicant.dob;
                     document.getElementById('email').innerHTML = json.applicant.email;
                     document.getElementById('mobile').innerHTML = json.applicant.mobile;
+                    document.getElementById('position').innerHTML = json.application.position;
 
-                    setPosition(json.application.position);
                     setGeneralInformation(json.application.general_information);
                     setEducationalQualifications(json.application.educational_qualification);
                     setAcademicExperiences(json.application.academic_experience);
@@ -86,13 +85,14 @@ const PrintPDF = () => {
             </div>
             <div className="container my-4 px-3" style={{ minWidth: '300px' }} id="application">
                 <div className="mx-auto">
-                    <h3 className="text-center">Application For The Post Of {position}</h3>
+                    <h3 className="text-center">Application For The Post Of Asst. Professor</h3>
                     <div>
 
                         <div className="my-4">
                             <h5>1. General Information</h5>
                             <div className="row py-2">
                                 <div className="col-4 d-flex flex-column">
+                                    <span>Area of Preference:</span>
                                     <span>Name of the Applicant:</span>
                                     <span>Date of Birth:</span>
                                     <span>Email:</span>
@@ -101,6 +101,7 @@ const PrintPDF = () => {
                                     <span>Permanent Address:</span>
                                 </div>
                                 <div className="col-4 d-flex flex-column">
+                                    <span id="position"></span>
                                     <span id="name"></span>
                                     <span id="dob"></span>
                                     <span id="email"></span>

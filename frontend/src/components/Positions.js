@@ -5,7 +5,7 @@ const Positions = () => {
     const navigate = useNavigate(null);
 
     const apply = (e) => {
-        navigate('/apply', {state: {position: e.target.value}})
+        navigate('/professor-apply');
     }
 
     return (
@@ -26,7 +26,7 @@ const Positions = () => {
                     <strong className="col-1">Apply</strong>
                 </div>
                 <div className="row text-center py-1 border d-flex justify-content-between align-items-center">
-                    <div className="col-1">Asst. Professor Marketing</div>
+                    <div className="col-1">Asst. Professor</div>
                     <div className="col-1">NA</div>
                     <div className="col-1">30-40</div>
                     <div className="col-1">State</div>
@@ -36,21 +36,7 @@ const Positions = () => {
                     <div className="col-1">Post-Graduate</div>
                     <div className="col-1">NA</div>
                     <div className="col-1">
-                        <button className="btn btn-success" value="Asst. Professor Marketing" onClick={apply} >Apply</button>
-                    </div>
-                </div>
-                <div className="row text-center py-1 border d-flex justify-content-between align-items-center">
-                    <div className="col-1">Asst. Professor Operations</div>
-                    <div className="col-1">NA</div>
-                    <div className="col-1">30-40</div>
-                    <div className="col-1">State</div>
-                    <div className="col-1">NA</div>
-                    <div className="col-1">1</div>
-                    <div className="col-1">NA</div>
-                    <div className="col-1">Post-Graduate</div>
-                    <div className="col-1">NA</div>
-                    <div className="col-1">
-                        <button className="btn btn-success" value="Asst. Professor Operations" onClick={apply} >Apply</button>
+                        <button className="btn btn-success" onClick={apply} >Apply</button>
                     </div>
                 </div>
             </div>

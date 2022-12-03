@@ -24,7 +24,7 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/applicant/profile" element={<Profile />} />
             <Route path="/positions" element={<Positions />} />
-            <Route path="/apply" element={<Application />} />
+            <Route path="/professor-apply" element={<Application />} />
             <Route path="/upload" element={<ImageUpload />} />
             <Route path="/printPDF" element={<PrintPDF />} />
             <Route path="/admin/login" element={<AdminLogin />} />

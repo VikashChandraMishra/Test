@@ -33,6 +33,10 @@ const Profile = () => {
                     let dob = json.applicant.dob.split('-');
                     let years = 2022 - parseInt(dob[0]);
                     let months = 10 - parseInt(dob[1]);
+                    if (months < 0 && years > 0) {
+                        months = 12 + months;
+                        years -= 1;
+                    }
                     let days = 1 - parseInt(dob[2]);
                     let age = `${years} years, ${months} months and ${days} days`;
                     json.applicant.age = age;

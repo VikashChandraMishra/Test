@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Application = () => {
 
   const navigate = useNavigate(null);
-  const location = useLocation();
   const [isReady, setIsReady] = useState(false);
 
   const checkReady = () => {
@@ -68,8 +67,6 @@ const Application = () => {
     let acadRemarks = document.getElementsByClassName('acad-remarks');
     let academic_experience = [];
 
-    console.log(acadPost[0].value)
-
     for (let i = 0; i < 3; i++) {
       academic_experience.push({ post: acadPost[0].value, organization: acadOrganization[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
     }
@@ -126,7 +123,7 @@ const Application = () => {
       research_papers.push({ title: rpTitle[i].value, details: rpDetails[i].value, remarks: rpRemarks[i].value, })
     }
 
-    let position = document.getElementById('position').innerText;
+    const position = document.getElementById('position').value;
 
     const response = await fetch('http://127.0.0.1:5000/api/applicant/submit-form', {
       method: 'POST',
@@ -142,7 +139,7 @@ const Application = () => {
     const json = await response.json();
 
     if (json.success === true && json.message === 'application successfully submitted') {
-      navigate('/upload', {state: {application_id: json.id}});
+      navigate('/upload', { state: { application_id: json.id } });
     }
     else alert("Application submitted with faulty data!");
 
@@ -155,9 +152,19 @@ const Application = () => {
           <p className="card-header">Application</p>
           <div className="card-body">
             <form className="form bg-light py-1 px-1" encType="multipart/form-data">
-              <h4>Position: <span id="position">{location.state.position}</span></h4>
               <div className="my-4">
                 <h5>1. General Information</h5>
+
+
+                <div className="col form-group">
+                  <label>Area of Preference</label>
+                  <select className="form-control" type="text" id="position" name="position" >
+                    <option> -- select an option -- </option>
+                    <option value="Finance Management">Finance Management</option>
+                    <option value="Operations Management">Operations Management</option>
+                    <option value="Human Resource Management">Human Resource Management</option>
+                  </select>
+                </div>
 
                 <div className="row py-2">
                   <div className="col form-group">

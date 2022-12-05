@@ -14,7 +14,6 @@ const Status = (props) => {
 
     return (
         <div className="row text-center py-1 border">
-            {console.log("_id")}
             <div className="col-2">{_id ? _id : 'NA'}</div>
             <div className="col-3">{position ? position : 'NA'}</div>
             <div className="col-3">{_id ? 'Submitted' : 'NA'}</div>

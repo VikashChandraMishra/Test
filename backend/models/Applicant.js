@@ -34,7 +34,7 @@ const applicantSchema = new Schema({
     },
 
     mobile: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },

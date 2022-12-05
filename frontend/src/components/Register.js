@@ -112,7 +112,7 @@ const Register = () => {
                             <div className="row py-2">
                                 <div className="col form-group">
                                     <label>Mobile <small style={{ color: 'red' }}>*</small></label>
-                                    <input className="form-control" type="number" id="mobile" name="mobile" value={applicant.mobile} onChange={onChange} required />
+                                    <input className="form-control" type="number" id="mobile" name="mobile" value={applicant.mobile} onChange={onChange} required minLength={10} maxLength={10} />
                                 </div>
                                 <div className="col form-group">
                                     <label>Email <small style={{ color: 'red' }}>*</small></label>

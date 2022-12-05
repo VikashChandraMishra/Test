@@ -37,7 +37,28 @@ const Profile = () => {
                         months = 12 + months;
                         years -= 1;
                     }
-                    let days = 1 - parseInt(dob[2]);
+                    let date = parseInt(dob[2]);
+                    let days = 0;
+                    if (date === 1) days = 0;
+                    else {
+                        days = date;
+                        months -= 1;
+                        switch (parseInt(dob[1])) {
+                            case 1: days = 31 - days;break;
+                            case 2: days = 28 - days;break;   
+                            case 3: days = 31 - days;break;   
+                            case 4: days = 30 - days;break;   
+                            case 5: days = 31 - days;break;   
+                            case 6: days = 30 - days;break;   
+                            case 7: days = 31 - days;break;   
+                            case 8: days = 31 - days;break;   
+                            case 9: days = 30 - days;break;   
+                            case 10: days = 31 - days;break;   
+                            case 11: days = 30 - days;break;   
+                            case 12: days = 31 - days;break;
+                            default: break;   
+                        }
+                    }
                     let age = `${years} years, ${months} months and ${days} days`;
                     json.applicant.age = age;
                     setApplicant(json.applicant);

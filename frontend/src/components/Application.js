@@ -158,12 +158,7 @@ const Application = () => {
 
                 <div className="col form-group">
                   <label>Area of Preference</label>
-                  <select className="form-control" type="text" id="position" name="position" >
-                    <option> -- select an option -- </option>
-                    <option value="Finance Management">Finance Management</option>
-                    <option value="Operations Management">Operations Management</option>
-                    <option value="Human Resource Management">Human Resource Management</option>
-                  </select>
+                  <input className="form-control" type="text" id="position" required />
                 </div>
 
                 <div className="row py-2">
@@ -695,7 +690,7 @@ const Application = () => {
               </div>
 
               <div className="my-4">
-                <button className="btn btn-success" onClick={handleSubmit} disabled={!isReady} >Submit</button>
+                <button className="btn btn-success" onClick={handleSubmit} disabled={!isReady} >Save&Next</button>
               </div>
 
             </form>

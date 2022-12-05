@@ -109,7 +109,7 @@ const PrintPDF = () => {
                                     <span>{generalInformation.correspondence_address}</span>
                                     <span>{generalInformation.permanent_address}</span>
                                 </div>
-                                <div className="col-4 d-flex flex-row">
+                                <div className="col-4 d-flex flex-column">
                                     <div className="mx-2 text-center">
                                         <div>Photo</div>
                                         <img src={`http://13.114.152.118:5000/${images.photo_path}`} height="80px" width="80px" alt="Unable to display" id="photo" />

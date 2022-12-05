@@ -5,24 +5,23 @@ const Register = () => {
 
     const navigate = useNavigate(null);
 
-    const [applicant, setApplicant] = useState({ "firstname": "", "middlename": "", "lastname": "", "dob": "", "category": "", "qualification": "", "mobile": 0, "email": "", "gender": "", "disabilityPercentage": 0, "PwBD_UDID": 0, "PwBD_category": "" })
+    const [applicant, setApplicant] = useState({ "firstname": "", "middlename": "", "lastname": "", "dob": "", "category": "", "qualification": "", "mobile": 0, "email": "", "gender": "" })
 
-    const [isPWD, setIsPWD] = useState(false);
-
-    const checkPWD = () => {
-        if (isPWD === false) setIsPWD(true);
-        else if (isPWD === true) setIsPWD(false);
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender, disabilityPercentage, PwBD_UDID, PwBD_category } = applicant;
+        const error = document.getElementById('error');
 
-        let body = { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender, disabilityPercentage, PwBD_UDID, PwBD_category }
+        const { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender } = applicant;
 
-        if (!PwBD_category)
-            body = { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender, disabilityPercentage, PwBD_UDID }
+        let body = { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender }
+
+
+        if (mobile >= 10000000000 || mobile <= 5000000000) {
+            error.innerHTML = 'Invalid mobile number';
+            return;
+        }
 
         const response = await fetch('http://13.114.152.118:5000/api/applicant/registration', {
             method: 'POST',
@@ -41,7 +40,7 @@ const Register = () => {
         }
         else alert("A user with the given email ID or mobile number already exists!");
 
-        setApplicant({ "firstname": "", "middlename": "", "lastname": "", "dob": "", "category": "", "qualification": "", "mobile": 0, "email": "", "gender": "", "disabilityPercentage": 0, "PwBD_UDID": 0, "PwBD_category": "" });
+        setApplicant({ "firstname": "", "middlename": "", "lastname": "", "dob": "", "category": "", "qualification": "", "mobile": 0, "email": "", "gender": "" });
     }
 
     const onChange = (e) => {
@@ -60,9 +59,9 @@ const Register = () => {
                             <br />
                             1. Candidate has to fill in the below mentioned details to receive the User ID and Password.
                             <br />
-                            2. Candidate will receive the User ID and Password on the registered email address.
+                            2. Candidate will receive the Registration Id and Password on the registered email address.
                             <br />
-                            3. Candidate can login with the User ID and Password to complete the application form for ASRLM
+                            3. Candidate can login with the Registration Id and Password to complete the application form
                             <br />
                             4. Candidate must provide Correct Name, Date of Birth, Mobile Number and Email Address as these details cannot be changed once the registration is complete.
                         </p>
@@ -127,47 +126,13 @@ const Register = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="row py-2">
-                                <div className="col-12 form-group">
-                                    <label>Do you come under PwBD section? <span style={{ color: 'red' }}>*</span></label>
-                                    <input className="mt-3 mb-3" type="checkbox" id="isPWD" name="isPWD" defaultChecked={false} onClick={checkPWD} />
-
-                                </div>
-                            </div>
-
-                            {isPWD &&
-                                <div className="row py-2">
-                                    <div className="col form-group">
-                                        <label>Percentage of Disability <small style={{ color: 'red' }}>*</small></label>
-                                        <input className="form-control" type="number" id="disabilityPercentage" name="disabilityPercentage" value={applicant.disabilityPercentage} onChange={onChange} />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>PwBD UDID number <small style={{ color: 'red' }}>*</small></label>
-                                        <input className="form-control" type="number" id="PwBD_UDID" name="PwBD_UDID" value={applicant.PwBD_UDID} onChange={onChange} />
-                                    </div>
-
-                                    <div className="col form-group">
-                                        <label>PwBD Category <small style={{ color: 'red' }}>*</small></label>
-                                        <select className="form-control" type="text" id="PwBD_category" name="PwBD_category" value={applicant.PwBD_category} onChange={onChange}>
-                                            <option> -- select an option -- </option>
-                                            <option value="Blindness and low vision">Blindness and low vision</option>
-                                            <option value="Deaf and hard of hearing">Deaf and hard of hearing</option>
-                                            <option value="Locomotor disability including cerebral palsy, leprosy cured, dwarfism, acid attack victims and muscular dystrophy">Locomotor disability including cerebral palsy, leprosy cured, dwarfism, acid attack victims and muscular dystrophy</option>
-                                            <option value="Autism, intellectual disability, specific learning disability and mental illness">Autism, intellectual disability, specific learning disability and mental illness</option>
-                                        </select>
-                                    </div>
-                                </div>}
 
                             <div className="col">
-                                <br />
-                                <div>
-                                    <small className="text-danger"></small><small className="text-success"></small>
-                                </div>
                                 <button className="btn btn-success btn-sm px-5" type="submit">Submit</button>
                             </div>
                             <br />
                             <br />
+                            <span id="error" style={{ color: 'red' }}></span>
                         </form>
                     </div>
                     <div className="card-footer">

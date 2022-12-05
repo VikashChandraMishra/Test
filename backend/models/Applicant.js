@@ -34,7 +34,7 @@ const applicantSchema = new Schema({
     },
 
     mobile: {
-        type: String,
+        type: Number,
         required: true,
         unique: true
     },
@@ -63,23 +63,6 @@ const applicantSchema = new Schema({
         required: true
     },
 
-    disabilityPercentage: {
-        type: Number
-    },
-    
-    PwBD_UDID: {
-        type: Number,
-    },
-
-    PwBD_category: {
-        type: String,
-        enum: [
-            'Blindness and low vision',
-            'Deaf and hard of hearing',
-            'Locomotor disability including cerebral palsy, leprosy cured, dwarfism, acid attack victims and muscular dystrophy',
-            'Autism, intellectual disability, specific learning disability and mental illness'
-        ]
-    }
 });
 
 const Applicant = mongoose.model('applicant', applicantSchema);

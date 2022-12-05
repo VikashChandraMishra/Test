@@ -9,13 +9,11 @@ import Profile from "./components/Profile";
 import Application from "./components/Application";
 import ImageUpload from "./components/ImageUpload";
 import PrintPDF from "./components/PrintPDF";
-import AuthState from './context/AuthState';
 import Positions from "./components/Positions";
 
 function App() {
   return (
     <div className="App">
-      <AuthState>
         <Router>
           <Navbar />
           <Routes>
@@ -31,7 +29,6 @@ function App() {
             <Route path="/admin/dashboard" element={<Dashboard />} />
           </Routes>
         </Router>
-      </AuthState>
     </div>
   );
 }

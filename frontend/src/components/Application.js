@@ -15,7 +15,7 @@ const Application = () => {
 
     if (localStorage.getItem('authToken')) {
       const fetchData = async () => {
-        const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-data', {
+        const response = await fetch('http://13.114.152.118:5000/api/applicant/fetch-data', {
           method: 'GET',
 
           headers: {
@@ -125,7 +125,7 @@ const Application = () => {
 
     const position = document.getElementById('position').value;
 
-    const response = await fetch('http://127.0.0.1:5000/api/applicant/submit-form', {
+    const response = await fetch('http://13.114.152.118:5000/api/applicant/submit-form', {
       method: 'POST',
 
       headers: {

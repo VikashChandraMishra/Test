@@ -18,7 +18,7 @@ const ImageUpload = () => {
         let formData = new FormData();
         formData.append('photo', photo.data);
         formData.append('signature', signature.data);
-        const response = await fetch('http://localhost:5000/api/applicant/photo-upload', {
+        const response = await fetch('http://13.114.152.118:5000/api/applicant/photo-upload', {
             method: 'POST',
 
             headers: {

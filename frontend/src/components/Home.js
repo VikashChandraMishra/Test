@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
-import { useContext } from 'react';
 
 const Home = () => {
 
     const navigate = useNavigate(null);
-    const context = useContext(AuthContext);
-    const { setIsLogged } = context;
 
     const [applicant, setApplicant] = useState({ "registrationId": "", "password": "" })
 
@@ -16,7 +12,7 @@ const Home = () => {
 
         const { registrationId, password } = applicant;
 
-        const response = await fetch('http://127.0.0.1:5000/api/applicant/login', {
+        const response = await fetch('http://13.114.152.118:5000/api/applicant/login', {
             method: 'POST',
 
             headers: {
@@ -29,7 +25,6 @@ const Home = () => {
         const json = await response.json();
         if (json.success) {
             localStorage.setItem('authToken', json.authToken)
-            setIsLogged(true);
             navigate('/applicant/profile');
         }
         else alert("Invalid credentials!");

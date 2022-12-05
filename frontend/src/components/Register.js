@@ -21,7 +21,7 @@ const Register = () => {
 
         let body = { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender, disabilityPercentage, PwBD_UDID, PwBD_category }
 
-        if(!PwBD_category)
+        if (!PwBD_category)
             body = { firstname, middlename, lastname, dob, category, qualification, mobile, email, gender, disabilityPercentage, PwBD_UDID }
 
         const response = await fetch('http://127.0.0.1:5000/api/applicant/registration', {
@@ -67,7 +67,7 @@ const Register = () => {
                             4. Candidate must provide Correct Name, Date of Birth, Mobile Number and Email Address as these details cannot be changed once the registration is complete.
                         </p>
 
-                        <form className="form bg-light py-1 px-1" id="register-form" onSubmit={handleSubmit}> 
+                        <form className="form bg-light py-1 px-1" id="register-form" onSubmit={handleSubmit}>
                             <div className="row py-2">
                                 <div className="col form-group">
                                     <label>First Name <small style={{ color: 'red' }}>*</small></label>
@@ -112,7 +112,7 @@ const Register = () => {
                             <div className="row py-2">
                                 <div className="col form-group">
                                     <label>Mobile <small style={{ color: 'red' }}>*</small></label>
-                                    <input className="form-control" type="number" id="mobile" name="mobile" value={applicant.mobile} onChange={onChange} required minLength={10} maxLength={10} />
+                                    <input className="form-control" type="number" id="mobile" name="mobile" value={applicant.mobile} onChange={onChange} required />
                                 </div>
                                 <div className="col form-group">
                                     <label>Email <small style={{ color: 'red' }}>*</small></label>

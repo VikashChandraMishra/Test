@@ -36,6 +36,7 @@ const Register = () => {
         const json = await response.json();
 
         if (json.success === true && json.message === 'applicant successfully registered') {
+            alert('Registration Id and Password have been sent to your registered email');
             navigate('/');
         }
         else alert("A user with the given email ID or mobile number already exists!");
@@ -104,7 +105,7 @@ const Register = () => {
                                     <select className="form-control" type="text" id="qualification" name="qualification" value={applicant.qualification} onChange={onChange} required >
                                         <option> -- select an option -- </option>
                                         <option value="Graduate">Graduate</option>
-                                        <option value="Post-Graduate Degree">Post-Graduate Degree</option>
+                                        <option value="Post-Graduate">Post-Graduate</option>
                                     </select>
                                 </div>
                             </div>

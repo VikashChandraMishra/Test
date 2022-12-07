@@ -1,21 +1,76 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AcadRows from "./ApplicationComponentRows/AcadRows";
+import PGRows from "./ApplicationComponentRows/PGRows";
+import ProRows from "./ApplicationComponentRows/ProRows";
+import RPRows from "./ApplicationComponentRows/RPRows";
+import SupRows from "./ApplicationComponentRows/SupRows";
+import UGRows from "./ApplicationComponentRows/UGRows";
 
 const Application = () => {
 
   const navigate = useNavigate(null);
   const [isReady, setIsReady] = useState(false);
+  const [rowNumbers, setRowNumbers] = useState({ "acadExp": 1, "proExp": 1, "ugExp": 1, "pgExp": 1, "supExp": 1, "rpExp": 1 })
 
   const checkReady = () => {
     if (isReady === false) setIsReady(true);
     else if (isReady === true) setIsReady(false);
   }
 
-  useEffect(() => {
+  const addRow = (e) => {
+    e.preventDefault();
+    let currentNumber = 0;
+    if (e.target.value === "rpExp") {
+      currentNumber = rowNumbers.rpExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        rpExp: currentNumber
+      });
+    } else if (e.target.value === "proExp") {
+      currentNumber = rowNumbers.proExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        proExp: currentNumber
+      });
+    } else if (e.target.value === "ugExp") {
+      currentNumber = rowNumbers.ugExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        ugExp: currentNumber
+      });
+    } else if (e.target.value === "pgExp") {
+      currentNumber = rowNumbers.pgExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        pgExp: currentNumber
+      });
+    } else if (e.target.value === "supExp") {
+      currentNumber = rowNumbers.supExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        supExp: currentNumber
+      });
+    } if (e.target.value === "acadExp") {
+      currentNumber = rowNumbers.acadExp;
+      currentNumber += 1;
+      setRowNumbers({
+        ...rowNumbers,
+        acadExp: currentNumber
+      });
+    }
 
+  }
+
+  useEffect(() => {
     if (localStorage.getItem('authToken')) {
       const fetchData = async () => {
-        const response = await fetch('http://13.114.152.118:5000/api/applicant/fetch-data', {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-data', {
           method: 'GET',
 
           headers: {
@@ -42,11 +97,17 @@ const Application = () => {
     // eslint-disable-next-line
   }, [])
 
+
+  const errorAlert = () => { alert('All fields are mandatory'); }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let position = document.getElementById('position').value;
     let correspondence_address = document.getElementById('correspondence_address').value;
     let permanent_address = document.getElementById('permanent_address').value;
+
+    if (!position || !correspondence_address || !permanent_address) { errorAlert(); return; }
 
     let eduDegree = document.getElementsByClassName('edu-degree');
     let eduDetails = document.getElementsByClassName('edu-details');
@@ -56,7 +117,11 @@ const Application = () => {
     let educational_qualification = [];
 
     for (let i = 0; i < 5; i++) {
-      educational_qualification.push({ degree: eduDegree[i].value, details: eduDetails[i].value, grade: eduGrade[i].value, subjects: eduSubjects[i].value, remarks: eduRemarks[i].value, })
+      if (!eduDegree[i].innerText || !eduDetails[i].value || !eduGrade[i].value || !eduSubjects[i].value || !eduRemarks[i].value) {
+        errorAlert();
+        return;
+      }
+      educational_qualification.push({ degree: eduDegree[i].innerText, details: eduDetails[i].value, grade: eduGrade[i].value, subjects: eduSubjects[i].value, remarks: eduRemarks[i].value })
     }
 
     let acadPost = document.getElementsByClassName('acad-post');
@@ -67,8 +132,12 @@ const Application = () => {
     let acadRemarks = document.getElementsByClassName('acad-remarks');
     let academic_experience = [];
 
-    for (let i = 0; i < 3; i++) {
-      academic_experience.push({ post: acadPost[0].value, organization: acadOrganization[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
+    for (let i = 0; i < rowNumbers.acadExp; i++) {
+      if (!acadPost[i].value || !acadOrganization[i].value || !acadDutyDesc[i].value || !acadSpecDuty[i].value || !acadExp[i].value || !acadRemarks[i].value) {
+        errorAlert();
+        return;
+      }
+      academic_experience.push({ post: acadPost[i].value, organization: acadOrganization[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
     }
 
     let proPost = document.getElementsByClassName('pro-post');
@@ -79,7 +148,11 @@ const Application = () => {
     let proRemarks = document.getElementsByClassName('pro-remarks');
     let industry_experience = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < rowNumbers.proExp; i++) {
+      if (!proPost[i].value || !proOrganization[i].value || !proBegin[i].value || !proEnd[i].value || !proExp[i].value || !proRemarks[i].value) {
+        errorAlert();
+        return;
+      }
       industry_experience.push({ post: proPost[i].value, organization: proOrganization[i].value, begin_date: proBegin[i].value, end_date: proEnd[i].value, experience: proExp[i].value, remarks: proRemarks[i].value, })
     }
 
@@ -89,7 +162,11 @@ const Application = () => {
     let ugRemarks = document.getElementsByClassName('ug-remarks');
     let ug_teaching_experience = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < rowNumbers.ugExp; i++) {
+      if (!ugYear[i].value || !ugCourse[i].value || !ugSubjects[i].value || !ugRemarks[i].value) {
+        errorAlert();
+        return;
+      }
       ug_teaching_experience.push({ year: ugYear[i].value, course: ugCourse[i].value, subjects: ugSubjects[i].value, remarks: ugRemarks[i].value, })
     }
 
@@ -100,7 +177,11 @@ const Application = () => {
     let pgRemarks = document.getElementsByClassName('pg-remarks');
     let pg_teaching_experience = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < rowNumbers.pgExp; i++) {
+      if (!pgYear[i].value || !pgCourse[i].value || !pgSubjects[i].value || !pgDegree[i].value || !pgRemarks[i].value) {
+        errorAlert();
+        return;
+      }
       pg_teaching_experience.push({ year: pgYear[i].value, course: pgCourse[i].value, subjects: pgSubjects[i].value, degree: pgDegree[i].value, remarks: pgRemarks[i].value, })
     }
 
@@ -110,7 +191,11 @@ const Application = () => {
     let ssRemarks = document.getElementsByClassName('ss-remarks');
     let supervision_experience = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < rowNumbers.supExp; i++) {
+      if (!ssYear[i].value || !ss_num_ds[i].value || !ss_num_mtc[i].value || !ssRemarks[i].value) {
+        errorAlert();
+        return;
+      }
       supervision_experience.push({ year: ssYear[i].value, number_DS: ss_num_ds[i].value, number_MTC: ss_num_mtc[i].value, remarks: ssRemarks[i].value, })
     }
 
@@ -119,11 +204,14 @@ const Application = () => {
     let rpRemarks = document.getElementsByClassName('rp-remarks');
     let research_papers = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < rowNumbers.rpExp; i++) {
+      if (!rpTitle[i].value || !rpDetails[i].value || !rpRemarks[i].value) {
+        errorAlert();
+        return;
+      }
       research_papers.push({ title: rpTitle[i].value, details: rpDetails[i].value, remarks: rpRemarks[i].value, })
     }
 
-    const position = document.getElementById('position').value;
 
     const response = await fetch('http://13.114.152.118:5000/api/applicant/submit-form', {
       method: 'POST',
@@ -144,50 +232,6 @@ const Application = () => {
     else alert("Application submitted with faulty data!");
 
   }
-
-
-  const calcExp = () => {
-    for (let i = 0; i < 2; i++) {
-      let exp = document.getElementsByClassName('pro-exp')[i];
-      let begin = document.getElementsByClassName('pro-begin')[i].value.split('-');
-      let end = document.getElementsByClassName('pro-end')[i].value.split('-');
-      let years = parseInt(end[0]) - parseInt(begin[0]);
-      if (isNaN(years)) return;
-      let months = parseInt(end[1]) - parseInt(begin[1]);
-      if (months < 0 && years > 0) {
-        months = 12 + months;
-        years -= 1;
-      }
-      let days = 0;
-      if (parseInt(begin[2]) === parseInt(end[2])) days = 0;
-      else if (parseInt(begin[2]) > parseInt(end[2])) {
-        days = parseInt(begin[2]);
-        months -= 1;
-        switch (parseInt(begin[1])) {
-          case 1: days = 31 - days; break;
-          case 2: days = 28 - days; break;
-          case 3: days = 31 - days; break;
-          case 4: days = 30 - days; break;
-          case 5: days = 31 - days; break;
-          case 6: days = 30 - days; break;
-          case 7: days = 31 - days; break;
-          case 8: days = 31 - days; break;
-          case 9: days = 30 - days; break;
-          case 10: days = 31 - days; break;
-          case 11: days = 30 - days; break;
-          case 12: days = 31 - days; break;
-          default: break;
-        }
-        days += parseInt(end[2]);
-      }
-      else if (parseInt(begin[2]) < parseInt(end[2])) {
-        days = parseInt(end[2]) - parseInt(begin[2]);
-      }
-      let age = `${years} years, ${months} months and ${days} days`;
-      exp.value = age;
-    }
-  }
-
 
   return (
     <div>
@@ -247,7 +291,6 @@ const Application = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>Sl.No.</th>
                       <th>Qualification</th>
                       <th>Year/University/Institute/Board</th>
                       <th>Percentage/Grade</th>
@@ -257,10 +300,7 @@ const Application = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td>i.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="Ph.D" disabled />
-                      </td>
+                      <td className="form-control edu-degree" >Ph.D</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -275,10 +315,7 @@ const Application = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td>ii.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="Post Graduation, MBA" disabled />
-                      </td>
+                      <td className="form-control edu-degree" >Post Graduation, MBA</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -293,10 +330,7 @@ const Application = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td>iii.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="Graduation" disabled />
-                      </td>
+                      <td className="form-control edu-degree">Graduation</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -311,10 +345,7 @@ const Application = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td>iv.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="Higher Secondary(H.S.) Pre Degree Science" disabled />
-                      </td>
+                      <td className="form-control edu-degree">Higher Secondary(H.S.) Pre Degree Science</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -329,10 +360,7 @@ const Application = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td>v.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="H.S.L.C." disabled />
-                      </td>
+                      <td className="form-control edu-degree">H.S.L.C.</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -347,10 +375,7 @@ const Application = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td>vi.</td>
-                      <td>
-                        <input type="text" className="form-control edu-degree" value="NET/SLET" disabled />
-                      </td>
+                      <td className="form-control edu-degree">NET/SLET</td>
                       <td>
                         <input type="text" className="form-control edu-details" />
                       </td>
@@ -383,68 +408,18 @@ const Application = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <input type="text" className="form-control acad-post" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-organization" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-desc" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-spec" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-exp" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-remarks" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input type="text" className="form-control acad-post" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-organization" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-desc" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-spec" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-exp" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-remarks" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <input type="text" className="form-control acad-post" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-organization" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-desc" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-duty-spec" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-exp" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control acad-remarks" />
-                      </td>
-                    </tr>
+                    {
+                      Array.from({ length: rowNumbers.acadExp })
+                        .map((_, index) => (
+                          <AcadRows key={index} />
+                        )
+                        )
+                    }
                   </tbody>
                 </table>
+                <div className="my-2 d-flex justify-content-end">
+                  <button className="btn btn-success" value={"acadExp"} onClick={addRow} >Add Row</button>
+                </div>
               </div>
 
               <div className="my-4">
@@ -453,7 +428,6 @@ const Application = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th rowSpan={2}>Sl.No.</th>
                       <th rowSpan={2}>Post</th>
                       <th rowSpan={2}>Organization</th>
                       <th colSpan={2}>Duration</th>
@@ -466,65 +440,28 @@ const Application = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        i.
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-post" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-organization" />
-                      </td>
-                      <td>
-                        <input type="date" className="form-control pro-begin" />
-                      </td>
-                      <td>
-                        <input type="date" className="form-control pro-end" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-exp" onClick={calcExp} />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-remarks" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        ii.
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-post" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-organization" />
-                      </td>
-                      <td>
-                        <input type="date" className="form-control pro-begin" />
-                      </td>
-                      <td>
-                        <input type="date" className="form-control pro-end" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-exp" onClick={calcExp} />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control pro-remarks" />
-                      </td>
-                    </tr>
+                    {
+                      Array.from({ length: rowNumbers.proExp })
+                        .map((_, index) => (
+                          <ProRows key={index} />
+                        )
+                        )
+                    }
                   </tbody>
                 </table>
+                <div className="my-2 d-flex justify-content-end">
+                  <button className="btn btn-success" value={"proExp"} onClick={addRow} >Add Row</button>
+                </div>
               </div>
 
               <div className="my-4">
                 <h5>5. Teaching Experience <i>(Please list courses taught at different levels)</i></h5>
 
-                <div className="my-4">
+                <div className="my-4 px-3">
                   <h5>A. Undergraduate Level</h5>
-                  <table>
+                  <table style={{ width: '1050px' }}>
                     <thead>
                       <tr>
-                        <th>Sl.No.</th>
                         <th>Year</th>
                         <th>Title of the course/ number of students</th>
                         <th>Core or Elective</th>
@@ -532,50 +469,26 @@ const Application = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          i.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-course" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-subjects" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-remarks" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          ii.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-course" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-subjects" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ug-remarks" />
-                        </td>
-                      </tr>
+                      {
+                        Array.from({ length: rowNumbers.ugExp })
+                          .map((_, index) => (
+                            <UGRows key={index} />
+                          )
+                          )
+                      }
                     </tbody>
                   </table>
+                  <div className="my-2 d-flex justify-content-end">
+                    <button className="btn btn-success" value={"ugExp"} onClick={addRow} >Add Row</button>
+                  </div>
+
                 </div>
 
-                <div className="my-4">
+                <div className="my-4 px-3">
                   <h5>B. Postgraduate Level</h5>
-                  <table>
+                  <table style={{ width: '1050px' }}>
                     <thead>
                       <tr>
-                        <th>Sl.No.</th>
                         <th>Year</th>
                         <th>Title of the course/ number of students</th>
                         <th>PGP/M.Phil/Ph.D/FPM/other</th>
@@ -584,56 +497,25 @@ const Application = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          i.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-course" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-degree" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-subjects" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-remarks" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          ii.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-course" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-degree" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-subjects" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control pg-remarks" />
-                        </td>
-                      </tr>
+                      {
+                        Array.from({ length: rowNumbers.pgExp })
+                          .map((_, index) => (
+                            <PGRows key={index} />
+                          )
+                          )
+                      }
                     </tbody>
                   </table>
+                  <div className="my-2 d-flex justify-content-end">
+                    <button className="btn btn-success" value={"pgExp"} onClick={addRow} >Add Row</button>
+                  </div>
                 </div>
 
-                <div className="my-4">
+                <div className="my-4 px-3">
                   <h5>C. Students Supervised for M.Phil/ Ph.D or FPM Programme</h5>
                   <table>
                     <thead>
                       <tr>
-                        <th>Sl.No.</th>
                         <th>Year</th>
                         <th>Number of students who have completed their dissertations - Direct Supervisor</th>
                         <th>Number of students who have completed their dissertations - Member of Thesis Commitee</th>
@@ -641,88 +523,45 @@ const Application = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          i.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-num-ds" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-num-mtc" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-remarks" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          ii.
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-year" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-num-ds" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-num-mtc" />
-                        </td>
-                        <td>
-                          <input type="text" className="form-control ss-remarks" />
-                        </td>
-                      </tr>
+                      {
+                        Array.from({ length: rowNumbers.supExp })
+                          .map((_, index) => (
+                            <SupRows key={index} />
+                          )
+                          )
+                      }
                     </tbody>
                   </table>
+                  <div className="my-2 d-flex justify-content-end">
+                    <button className="btn btn-success" value={"supExp"} onClick={addRow} >Add Row</button>
+                  </div>
                 </div>
               </div>
 
 
-              <div className="my-4">
+              <div className="my-4 px-3">
                 <h5>6. Research Papers/ Publication etc. (Additional pages may be appended)</h5>
-                <table>
+                <table style={{ width: '1050px' }}>
                   <thead>
                     <tr>
-                      <th>Sl.No.</th>
                       <th>Subject/ Title of the Research Paper</th>
                       <th>Published in (Name, year and edition of the Journal, etc.)</th>
-                      <th style={{ width: '330px' }}>Remarks</th>
+                      <th>Remarks</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        i.
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-title" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-details" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-remarks" />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        ii.
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-title" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-details" />
-                      </td>
-                      <td>
-                        <input type="text" className="form-control rp-remarks" />
-                      </td>
-                    </tr>
+                    {
+                      Array.from({ length: rowNumbers.rpExp })
+                        .map((_, index) => (
+                          <RPRows key={index} />
+                        )
+                        )
+                    }
                   </tbody>
                 </table>
+                <div className="my-2 d-flex justify-content-end">
+                  <button className="btn btn-success" value={"rpExp"} onClick={addRow} >Add Row</button>
+                </div>
               </div>
 
               <div>

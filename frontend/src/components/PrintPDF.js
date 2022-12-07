@@ -112,11 +112,11 @@ const PrintPDF = () => {
                                 <div className="col-4 d-flex flex-column">
                                     <div className="mx-2 text-center">
                                         <div>Photo</div>
-                                        <img src={`http://13.114.152.118:5000/${images.photo_path}`} height="80px" width="80px" alt="Unable to display" id="photo" />
+                                        <img src={`http://13.114.152.118:5000/${images.photo_path}`} height="100px" width="80px" alt="Unable to display" id="photo" />
                                     </div>
                                     <div className="mx-2 text-center">
                                         <div>Signature</div>
-                                        <img src={`http://13.114.152.118:5000/${images.signature_path}`} height="60px" width="120px" alt="Unable to display" id="signature" />
+                                        <img src={`http://13.114.152.118:5000/${images.signature_path}`} height="60px" width="80px" alt="Unable to display" id="signature" />
                                     </div>
                                 </div>
                             </div>

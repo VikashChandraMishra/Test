@@ -15,5 +15,5 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/applicant', require('./routes/applicant'));
 
 app.listen(port, () => {
-    console.log(`ASRLM API listening on port ${port}`); 
+    console.log(`API listening on port ${port}`); 
 }); 

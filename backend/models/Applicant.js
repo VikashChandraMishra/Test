@@ -29,7 +29,7 @@ const applicantSchema = new Schema({
 
     qualification: {
         type: String,
-        enum: ['Graduate', 'Post-graduate'],
+        enum: ['Graduate', 'Post-Graduate'],
         required: true
     },
 

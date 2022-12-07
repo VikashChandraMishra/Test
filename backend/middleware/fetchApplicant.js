@@ -10,7 +10,8 @@ const fetchApplicant = (req, res, next) => {
     }
 
     try {
-        req.id = jwt.verify(token, SECRET_KEY);
+        payload = jwt.verify(token, SECRET_KEY);
+        req.id = payload.id;
         next(); 
     } catch (error) {
         res.send({error: "invalid token"});

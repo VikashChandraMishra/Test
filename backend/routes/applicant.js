@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 const Applicant = require('../models/Applicant');
 const Application = require('../models/Application');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY, user, pass } = process.env;
+const { SECRET_KEY, user, pass, BASE_ID } = process.env;
 const fetchApplicant = require('../middleware/fetchApplicant');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 const pUpload = upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'signature', maxCount: 1 }]);
 const nodemailer = require('nodemailer');
 
+
 router.post('/registration', async (req, res) => {
     try {
 
@@ -28,10 +29,8 @@ router.post('/registration', async (req, res) => {
             res.json({ "success": false, "message": "applicant already exists" });
         }
         else {
-
-            const uniqueString =  uuidv4();
-            const registrationId = uniqueString.split('-')[0] + uniqueString.split('-')[1];
-
+            const applicantCount = await Applicant.countDocuments({});
+            const registrationId = BASE_ID + applicantCount;
             const newApplicant = await Applicant.create({
                 firstname: req.body.firstname,
                 middlename: req.body.middlename,
@@ -49,31 +48,31 @@ router.post('/registration', async (req, res) => {
                 PwBD_category: req.body.PwBD_category,
             });
 
-            const mailTransport = nodemailer.createTransport({
-                host: "smtpout.asia.secureserver.net",
-                secure: true,
-                port: 465,
-                auth: {
-                    user: user,
-                    pass: pass
-                }
-            });
+            // const mailTransport = nodemailer.createTransport({
+            //     host: "smtpout.asia.secureserver.net",
+            //     secure: true,
+            //     port: 465,
+            //     auth: {
+            //         user: user,
+            //         pass: pass
+            //     }
+            // });
         
-            const mailOptions = {
-                from: process.env.user,
-                to: newApplicant.email,
-                subject: `Login Credentials For Recruitment Process`,
-                html: `<h3>Credentials</h3>
-                <h4>Registration ID: ${newApplicant.registrationId}</h4>
-                <h4>Password: ${newApplicant.password}</h4>`,
-            };
+            // const mailOptions = {
+            //     from: process.env.user,
+            //     to: newApplicant.email,
+            //     subject: `Login Credentials For Recruitment Process`,
+            //     html: `<h3>Credentials</h3>
+            //     <h4>Registration ID: ${newApplicant.registrationId}</h4>
+            //     <h4>Password: ${newApplicant.password}</h4>`,
+            // };
 
-            mailTransport.sendMail(mailOptions).then(() => {
-                console.log('Email sent successfully');
-            }).catch((err) => {
-                console.log('Failed to send email');
-                console.error(err);
-            });
+            // mailTransport.sendMail(mailOptions).then(() => {
+            //     console.log('Email sent successfully');
+            // }).catch((err) => {
+            //     console.log('Failed to send email');
+            //     console.error(err);
+            // });
         
 
             res.json({ "success": true, "message": "applicant successfully registered" })
@@ -97,7 +96,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "incorrect credentials" });
         }
         else {
-            const authToken = jwt.sign(existingUser.id, SECRET_KEY);
+            const authToken = jwt.sign({id: existingUser.id}, SECRET_KEY, {expiresIn: 30});
             res.json({ "success": true, "authToken": authToken });
         }
 

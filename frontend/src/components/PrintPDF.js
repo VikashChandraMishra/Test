@@ -37,7 +37,7 @@ const PrintPDF = () => {
 
         if (localStorage.getItem('authToken')) {
             const fetchData = async () => {
-                const response = await fetch('http://13.114.152.118:5000/api/applicant/fetch-application-data', {
+                const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-application-data', {
                     method: 'POST',
 
                     headers: {
@@ -112,11 +112,11 @@ const PrintPDF = () => {
                                 <div className="col-4 d-flex flex-column">
                                     <div className="mx-2 text-center">
                                         <div>Photo</div>
-                                        <img src={`http://13.114.152.118:5000/${images.photo_path}`} height="100px" width="80px" alt="Unable to display" id="photo" />
+                                        <img src={`http://127.0.0.1:5000/${images.photo_path}`} height="100px" width="100px" alt="Unable to display" id="photo" />
                                     </div>
                                     <div className="mx-2 text-center">
                                         <div>Signature</div>
-                                        <img src={`http://13.114.152.118:5000/${images.signature_path}`} height="60px" width="80px" alt="Unable to display" id="signature" />
+                                        <img src={`http://127.0.0.1:5000/${images.signature_path}`} height="60px" width="100px" alt="Unable to display" id="signature" />
                                     </div>
                                 </div>
                             </div>

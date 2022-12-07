@@ -12,7 +12,7 @@ const Home = () => {
 
         const { registrationId, password } = applicant;
 
-        const response = await fetch('http://13.114.152.118:5000/api/applicant/login', {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/login', {
             method: 'POST',
 
             headers: {

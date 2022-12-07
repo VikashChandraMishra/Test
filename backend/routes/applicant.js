@@ -48,31 +48,31 @@ router.post('/registration', async (req, res) => {
                 PwBD_category: req.body.PwBD_category,
             });
 
-            // const mailTransport = nodemailer.createTransport({
-            //     host: "smtpout.asia.secureserver.net",
-            //     secure: true,
-            //     port: 465,
-            //     auth: {
-            //         user: user,
-            //         pass: pass
-            //     }
-            // });
+            const mailTransport = nodemailer.createTransport({
+                host: "smtpout.asia.secureserver.net",
+                secure: true,
+                port: 465,
+                auth: {
+                    user: user,
+                    pass: pass
+                }
+            });
         
-            // const mailOptions = {
-            //     from: process.env.user,
-            //     to: newApplicant.email,
-            //     subject: `Login Credentials For Recruitment Process`,
-            //     html: `<h3>Credentials</h3>
-            //     <h4>Registration ID: ${newApplicant.registrationId}</h4>
-            //     <h4>Password: ${newApplicant.password}</h4>`,
-            // };
+            const mailOptions = {
+                from: process.env.user,
+                to: newApplicant.email,
+                subject: `Login Credentials For Recruitment Process`,
+                html: `<h3>Credentials</h3>
+                <h4>Registration ID: ${newApplicant.registrationId}</h4>
+                <h4>Password: ${newApplicant.password}</h4>`,
+            };
 
-            // mailTransport.sendMail(mailOptions).then(() => {
-            //     console.log('Email sent successfully');
-            // }).catch((err) => {
-            //     console.log('Failed to send email');
-            //     console.error(err);
-            // });
+            mailTransport.sendMail(mailOptions).then(() => {
+                console.log('Email sent successfully');
+            }).catch((err) => {
+                console.log('Failed to send email');
+                console.error(err);
+            });
         
 
             res.json({ "success": true, "message": "applicant successfully registered" })
@@ -96,7 +96,7 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ success: false, message: "incorrect credentials" });
         }
         else {
-            const authToken = jwt.sign({id: existingUser.id}, SECRET_KEY, {expiresIn: 30});
+            const authToken = jwt.sign(existingUser.id, SECRET_KEY);
             res.json({ "success": true, "authToken": authToken });
         }
 

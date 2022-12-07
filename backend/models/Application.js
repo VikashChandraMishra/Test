@@ -19,6 +19,8 @@ const educationSchema = new Schema({
 const academicExperienceSchema = new Schema({
     post: {type: String},
     organization: {type: String},
+    begin_date: {type: String},
+    end_date: {type: String},
     duty: {type: String},
     special_duty: {type: String},
     experience: {type: String},

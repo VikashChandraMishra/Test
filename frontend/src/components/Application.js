@@ -125,6 +125,8 @@ const Application = () => {
     }
 
     let acadPost = document.getElementsByClassName('acad-post');
+    let acadBegin = document.getElementsByClassName('acad-begin');
+    let acadEnd = document.getElementsByClassName('acad-end');
     let acadOrganization = document.getElementsByClassName('acad-organization');
     let acadDutyDesc = document.getElementsByClassName('acad-duty-desc');
     let acadSpecDuty = document.getElementsByClassName('acad-duty-spec');
@@ -133,11 +135,11 @@ const Application = () => {
     let academic_experience = [];
 
     for (let i = 0; i < rowNumbers.acadExp; i++) {
-      if (!acadPost[i].value || !acadOrganization[i].value || !acadDutyDesc[i].value || !acadSpecDuty[i].value || !acadExp[i].value || !acadRemarks[i].value) {
+      if (!acadPost[i].value || !acadOrganization[i].value || !acadBegin[i].value || !acadEnd[i].value || !acadDutyDesc[i].value || !acadSpecDuty[i].value || !acadExp[i].value || !acadRemarks[i].value) {
         errorAlert();
         return;
       }
-      academic_experience.push({ post: acadPost[i].value, organization: acadOrganization[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
+      academic_experience.push({ post: acadPost[i].value, organization: acadOrganization[i].value, begin_date: acadBegin[i].value, end_date: acadEnd[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
     }
 
     let proPost = document.getElementsByClassName('pro-post');
@@ -213,7 +215,7 @@ const Application = () => {
     }
 
 
-    const response = await fetch('http://13.114.152.118:5000/api/applicant/submit-form', {
+    const response = await fetch('http://127.0.0.1:5000/api/applicant/submit-form', {
       method: 'POST',
 
       headers: {
@@ -399,11 +401,13 @@ const Application = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>Name of the post/ dates of joining and leaving</th>
-                      <th>Name of the Organization</th>
+                      <th>Post</th>
+                      <th>Organization</th>
+                      <th>Joining Date</th>
+                      <th>Leaving Date</th>
                       <th>Description of duties</th>
                       <th>Special nature of assignment, if any and key actions taken</th>
-                      <th>Experience in years and months</th>
+                      <th>Experience in years, months and days</th>
                       <th>Remarks</th>
                     </tr>
                   </thead>
@@ -411,7 +415,7 @@ const Application = () => {
                     {
                       Array.from({ length: rowNumbers.acadExp })
                         .map((_, index) => (
-                          <AcadRows key={index} />
+                          <AcadRows key={index} rows={rowNumbers.acadExp} />
                         )
                         )
                     }
@@ -431,7 +435,7 @@ const Application = () => {
                       <th rowSpan={2}>Post</th>
                       <th rowSpan={2}>Organization</th>
                       <th colSpan={2}>Duration</th>
-                      <th rowSpan={2}>Experience in years and months</th>
+                      <th rowSpan={2}>Experience in years, months and days</th>
                       <th rowSpan={2}>Remarks</th>
                     </tr>
                     <tr>
@@ -443,7 +447,7 @@ const Application = () => {
                     {
                       Array.from({ length: rowNumbers.proExp })
                         .map((_, index) => (
-                          <ProRows key={index} />
+                          <ProRows key={index} rows={rowNumbers.proExp} />
                         )
                         )
                     }

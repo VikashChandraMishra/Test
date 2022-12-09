@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Logo from '../images/logo.jpg';
 
 const Navbar = () => {
 
@@ -15,15 +16,16 @@ const Navbar = () => {
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-light">
-                <div className="container-fluid">
-                    <Link className="navbar-brand" to="/">
-                        <img src="https://aimguwahati.edu.in/wp-content/uploads/2021/04/aim-Logo.jpg" width={50} height={50} alt="" />
+                <div className="container-fluid row">
+                    <Link className="navbar-brand col-4 d-flex justify-content-end" to="/">
+                        <img src={Logo} width={50} height={50} alt="unable to display logo at the moment" />
                     </Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <h4 className='col-4 text-center'>ASSAM INSTITUTE OF MANAGEMENT</h4>
+                    <button className="navbar-toggler col-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div className="collapse navbar-collapse col-2" id="navbarSupportedContent" >
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end">
                             <li className="nav-item">
                                 <a className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} aria-current="page" href="/">Home</a>
                             </li>

@@ -188,11 +188,14 @@ router.post('/save-form', fetchApplicant, async (req, res) => {
                 general_information: { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address },
                 educational_qualification: req.body.educational_qualification,
                 academic_experience: req.body.academic_experience,
+                total_academic_experience: req.body.total_academic_experience,
                 industry_experience: req.body.industry_experience,
+                total_industry_experience: req.body.total_industry_experience,
                 ug_teaching_experience: req.body.ug_teaching_experience,
                 pg_teaching_experience: req.body.pg_teaching_experience,
                 supervision_experience: req.body.supervision_experience,
-                research_papers: req.body.research_papers
+                research_papers: req.body.research_papers,
+                status: 'saved'
             });
 
             const applicant = await Applicant.findOne({ "id": req.id });
@@ -205,7 +208,9 @@ router.post('/save-form', fetchApplicant, async (req, res) => {
             existing_application.general_information = { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address };
             existing_application.educational_qualification = req.body.educational_qualification;
             existing_application.academic_experience = req.body.academic_experience;
+            existing_application.total_academic_experience = req.body.total_academic_experience;
             existing_application.industry_experience = req.body.industry_experience;
+            existing_application.total_industry_experience = req.body.total_industry_experience;
             existing_application.ug_teaching_experience = req.body.ug_teaching_experience;
             existing_application.pg_teaching_experience = req.body.pg_teaching_experience;
             existing_application.supervision_experience = req.body.supervision_experience;
@@ -238,16 +243,16 @@ router.get('/saved-form-data', fetchApplicant, async (req, res) => {
     }
 })
 
-router.post('/photo-upload', pUpload, async (req, res) => {
+router.post('/photo-upload', fetchApplicant, pUpload, async (req, res) => {
 
     try {
-        const existingApplication = await Application.findOne({ _id: req.headers.id });
+        const existingApplication = await Application.findOne({ applicant: req.id });
 
         if (!existingApplication) {
             return res.status(400).json({ success: false, message: "application does not exist" });
         } else {
             existingApplication.photos = { photo_path: 'uploads/' + req.files['photo'][0].filename, signature_path: 'uploads/' + req.files['signature'][0].filename };
-
+            existingApplication.status = 'submitted';
             await existingApplication.save();
 
         }
@@ -263,7 +268,7 @@ router.post('/photo-upload', pUpload, async (req, res) => {
 
 router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     try {
-        const applications = await Application.find({ applicant: req.id }).select("position");
+        const applications = await Application.find({ applicant: req.id });
         res.json({ "success": true, "applications": applications });
     }
     catch (error) {

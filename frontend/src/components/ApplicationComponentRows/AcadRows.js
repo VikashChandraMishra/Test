@@ -1,6 +1,6 @@
 const AcadRows = (props) => {
 
-    const { rows } = props;
+    const { rows, calcTotalExp } = props;
 
     const calcExp = () => {
         for (let i = 0; i < rows; i++) {
@@ -16,7 +16,7 @@ const AcadRows = (props) => {
             }
             let days = 0;
             if (parseInt(begin[2]) === parseInt(end[2])) days = 0;
-            else if (parseInt(begin[2]) > parseInt(end[2])) {
+            else if ((parseInt(begin[2]) > parseInt(end[2]) && begin[1] !== end[1])) {
                 days = parseInt(begin[2]);
                 months -= 1;
                 switch (parseInt(begin[1])) {
@@ -36,12 +36,22 @@ const AcadRows = (props) => {
                 }
                 days += parseInt(end[2]);
             }
+            else if ((parseInt(begin[2]) > parseInt(end[2]) && begin[1] === end[1])) {
+                if (years > 0) {
+                    months = 11;
+                    years -= 1;
+                }
+                days = parseInt(begin[2]) - parseInt(end[2]);
+            }
             else if (parseInt(begin[2]) < parseInt(end[2])) {
                 days = parseInt(end[2]) - parseInt(begin[2]);
             }
             let age = `${years} years, ${months} months and ${days} days`;
             exp.value = age;
         }
+
+        calcTotalExp('acad-exp', rows);
+
     }
 
     return (
@@ -53,10 +63,10 @@ const AcadRows = (props) => {
                 <input type="text" className="form-control acad-organization" />
             </td>
             <td>
-                <input type="date" className="form-control acad-begin" />
+                <input type="date" className="form-control acad-begin" onChange={calcExp} />
             </td>
             <td>
-                <input type="date" className="form-control acad-end" />
+                <input type="date" className="form-control acad-end" onChange={calcExp} />
             </td>
             <td>
                 <input type="text" className="form-control acad-duty-desc" />
@@ -65,7 +75,7 @@ const AcadRows = (props) => {
                 <input type="text" className="form-control acad-duty-spec" />
             </td>
             <td>
-                <input type="text" className="form-control acad-exp" onClick={calcExp} />
+                <input type="text" className="form-control acad-exp" />
             </td>
             <td>
                 <input type="text" className="form-control acad-remarks" />

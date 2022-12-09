@@ -4,7 +4,7 @@ const Status = (props) => {
 
     const { application } = props;
 
-    const { _id, position } = application;
+    const { _id, position, status } = application;
 
     const navigate = useNavigate(null);
 
@@ -16,10 +16,10 @@ const Status = (props) => {
         <div className="row text-center py-1 border">
             <div className="col-2">{_id ? _id : 'NA'}</div>
             <div className="col-3">{position ? position : 'NA'}</div>
-            <div className="col-3">{_id ? 'Submitted' : 'NA'}</div>
-            <div className="col-3">{_id ? 'Application Submitted Successfully' : 'NA'}</div>
+            <div className="col-3">{_id ? status.toUpperCase() : 'NA'}</div>
+            <div className="col-3">{_id ? `Application ${status} successfully` : 'NA'}</div>
             <div className="col-1">{
-                <button className="btn btn-success" disabled={!_id} onClick={printPDF}>Print</button>
+                <button className="btn btn-success" disabled={status === 'saved'} onClick={printPDF}>Preview</button>
             }</div>
         </div>
     )

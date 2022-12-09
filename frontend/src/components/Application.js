@@ -135,6 +135,20 @@ const Application = () => {
 
   }
 
+  const calcTotalExp = (area, number) => {
+    let years = 0;
+    let months = 0;
+    for (let i = 0; i < number; i++) {
+      years += parseInt(document.getElementsByClassName(`${area}`)[i].value.split(',')[0]);
+      months += parseInt((document.getElementsByClassName(`${area}`)[i].value.split(',')[1]).slice(0, 3));
+    }
+    if (months > 12) {
+      years += 1;
+      months -= 12;
+    }
+    document.getElementById(`total-${area}`).innerText = `${years} years and ${months} months`;
+  }
+
   useEffect(() => {
     if (localStorage.getItem('authToken')) {
       document.getElementById('check').checked = false;
@@ -211,6 +225,9 @@ const Application = () => {
               acadExp[i].value = application.academic_experience[i].experience;
               acadRemarks[i].value = application.academic_experience[i].remarks;
             }
+
+            document.getElementById('total-acad-exp').innerText = application.total_academic_experience;
+            document.getElementById('total-pro-exp').innerText = application.total_industry_experience;
 
             let proPost = document.getElementsByClassName('pro-post');
             let proOrganization = document.getElementsByClassName('pro-organization');
@@ -324,6 +341,9 @@ const Application = () => {
       academic_experience.push({ post: acadPost[i].value, organization: acadOrganization[i].value, begin_date: acadBegin[i].value, end_date: acadEnd[i].value, duty: acadDutyDesc[i].value, special_duty: acadSpecDuty[i].value, experience: acadExp[i].value, remarks: acadRemarks[i].value, })
     }
 
+    let total_academic_experience = document.getElementById('total-acad-exp').innerText;
+    let total_industry_experience = document.getElementById('total-pro-exp').innerText;
+
     let proPost = document.getElementsByClassName('pro-post');
     let proOrganization = document.getElementsByClassName('pro-organization');
     let proBegin = document.getElementsByClassName('pro-begin');
@@ -385,7 +405,7 @@ const Application = () => {
         'authToken': localStorage.getItem('authToken'),
       },
 
-      body: JSON.stringify({ position, correspondence_address, permanent_address, educational_qualification, academic_experience, industry_experience, ug_teaching_experience, pg_teaching_experience, supervision_experience, research_papers })
+      body: JSON.stringify({ position, correspondence_address, permanent_address, educational_qualification, academic_experience, total_academic_experience, industry_experience, total_industry_experience, ug_teaching_experience, pg_teaching_experience, supervision_experience, research_papers })
     })
 
     const json = await response.json();
@@ -611,12 +631,16 @@ const Application = () => {
                     {
                       Array.from({ length: rowNumbers.acadExp })
                         .map((_, index) => (
-                          <AcadRows key={index} rows={rowNumbers.acadExp} />
+                          <AcadRows key={index} rows={rowNumbers.acadExp} calcTotalExp={calcTotalExp} />
                         )
                         )
                     }
                   </tbody>
                 </table>
+                <div className="text-center my-2">
+                  <strong>Total Experience: </strong>
+                  <span id="total-acad-exp"></span>
+                </div>
                 <div className="my-2 d-flex justify-content-between">
                   <button className="btn btn-success" value={"acadExp"} onClick={deleteRow} >Delete Row</button>
                   <button className="btn btn-success" value={"acadExp"} onClick={addRow} >Add Row</button>
@@ -644,12 +668,16 @@ const Application = () => {
                     {
                       Array.from({ length: rowNumbers.proExp })
                         .map((_, index) => (
-                          <ProRows key={index} rows={rowNumbers.proExp} />
+                          <ProRows key={index} rows={rowNumbers.proExp} calcTotalExp={calcTotalExp} />
                         )
                         )
                     }
                   </tbody>
                 </table>
+                <div className="text-center my-2">
+                  <strong>Total Experience: </strong>
+                  <span id="total-pro-exp"></span>
+                </div>
                 <div className="my-2 d-flex justify-content-between">
                   <button className="btn btn-success" value={"proExp"} onClick={deleteRow} >Delete Row</button>
                   <button className="btn btn-success" value={"proExp"} onClick={addRow} >Add Row</button>

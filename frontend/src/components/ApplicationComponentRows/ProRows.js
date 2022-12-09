@@ -1,6 +1,6 @@
 const ProRows = (props) => {
 
-    const { rows } = props;
+    const { rows, calcTotalExp } = props;
 
     const calcExp = () => {
         for (let i = 0; i < rows; i++) {
@@ -16,7 +16,7 @@ const ProRows = (props) => {
             }
             let days = 0;
             if (parseInt(begin[2]) === parseInt(end[2])) days = 0;
-            else if (parseInt(begin[2]) > parseInt(end[2])) {
+            else if ((parseInt(begin[2]) > parseInt(end[2]) && begin[1] !== end[1])) {
                 days = parseInt(begin[2]);
                 months -= 1;
                 switch (parseInt(begin[1])) {
@@ -36,12 +36,21 @@ const ProRows = (props) => {
                 }
                 days += parseInt(end[2]);
             }
+            else if ((parseInt(begin[2]) > parseInt(end[2]) && begin[1] === end[1])) {
+                if (years > 0) {
+                    months = 11;
+                    years -= 1;
+                }
+                days = parseInt(begin[2]) - parseInt(end[2]);
+            }
             else if (parseInt(begin[2]) < parseInt(end[2])) {
                 days = parseInt(end[2]) - parseInt(begin[2]);
             }
             let age = `${years} years, ${months} months and ${days} days`;
             exp.value = age;
         }
+
+        calcTotalExp('pro-exp', rows);
     }
 
     return (
@@ -53,13 +62,13 @@ const ProRows = (props) => {
                 <input type="text" className="form-control pro-organization" />
             </td>
             <td>
-                <input type="date" className="form-control pro-begin" />
+                <input type="date" className="form-control pro-begin" onChange={calcExp} />
             </td>
             <td>
-                <input type="date" className="form-control pro-end" />
+                <input type="date" className="form-control pro-end" onChange={calcExp} />
             </td>
             <td>
-                <input type="text" className="form-control pro-exp" onClick={calcExp} />
+                <input type="text" className="form-control pro-exp" />
             </td>
             <td>
                 <input type="text" className="form-control pro-remarks" />

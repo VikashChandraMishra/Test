@@ -10,7 +10,6 @@ import Application from "./components/Application";
 import ImageUpload from "./components/ImageUpload";
 import PrintPDF from "./components/PrintPDF";
 import Positions from "./components/Positions";
-import A from "./components/FormParts/A";
 
 function App() {
   return (
@@ -28,7 +27,6 @@ function App() {
             <Route path="/printPDF" element={<PrintPDF />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/A" element={<A />} />
           </Routes>
         </Router>
     </div>

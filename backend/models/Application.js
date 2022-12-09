@@ -83,12 +83,14 @@ const applicationSchema = new Schema({
     general_information: generalInformationSchema,
     educational_qualification: [educationSchema],
     academic_experience: [academicExperienceSchema],
+    total_academic_experience: {type: String},
     industry_experience: [industryExperienceSchema],
+    total_industry_experience: {type: String},
     ug_teaching_experience: [ugteachingExperienceSchema],
     pg_teaching_experience: [pgteachingExperienceSchema],
     supervision_experience: [supervisionExperienceSchema],
     research_papers: [researchPaperSchema],
-
+    status: {type: String}
 });
 
 const Application = mongoose.model('application', applicationSchema);

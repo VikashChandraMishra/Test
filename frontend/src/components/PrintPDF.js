@@ -15,7 +15,6 @@ const PrintPDF = () => {
 
     const navigate = useNavigate(null);
 
-    const [generalInformation, setGeneralInformation] = useState([]);
     const [educationalQualifications, setEducationalQualifications] = useState([]);
     const [academicExperiences, setAcademicExperiences] = useState([]);
     const [industryExperiences, setIndustryExperiences] = useState([]);
@@ -63,8 +62,10 @@ const PrintPDF = () => {
                     document.getElementById('mobile').innerText = json.applicant.mobile;
                     document.getElementById('gender').innerText = json.applicant.gender;
                     document.getElementById('position').innerText = json.application.position;
+                    document.getElementById('total-acad-exp').innerText = json.application.total_academic_experience;
+                    document.getElementById('total-pro-exp').innerText = json.application.total_industry_experience;
 
-                    setGeneralInformation(json.application.general_information);
+
                     setEducationalQualifications(json.application.educational_qualification);
                     setAcademicExperiences(json.application.academic_experience);
                     setIndustryExperiences(json.application.industry_experience);
@@ -206,6 +207,11 @@ const PrintPDF = () => {
                                         })}
                                     </tbody>
                                 </table>
+                                <div className="text-center my-2">
+                                    <strong>Total Academic Experience: </strong>
+                                    <span id="total-acad-exp"></span>
+                                </div>
+
                             </div>
                         </div>
 
@@ -234,6 +240,10 @@ const PrintPDF = () => {
                                         })}
                                     </tbody>
                                 </table>
+                                <div className="text-center my-2">
+                                    <strong>Total Professional/Industry Experience: </strong>
+                                    <span id="total-pro-exp"></span>
+                                </div>
                             </div>
                         </div>
 

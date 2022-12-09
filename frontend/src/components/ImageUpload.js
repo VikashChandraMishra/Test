@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ImageUpload = () => {
 
-    const location = useLocation();
     const navigate = useNavigate('null');
     const [photo, setPhoto] = useState({ preview: '', data: '' });
     const [signature, setSignature] = useState({ preview: '', data: '' });
@@ -21,7 +20,7 @@ const ImageUpload = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let confirmation =  window.prompt("No further changes to the form will be possible. Do you want to submit?(Yes/No)");
+        let confirmation = window.prompt("Once submitted, no further changes to the form can be made. Do you want to submit?(Yes/No)");
         if (!(confirmation.toUpperCase() === 'yes'.toUpperCase()))
             return;
         let formData = new FormData();
@@ -32,7 +31,6 @@ const ImageUpload = () => {
 
             headers: {
                 'authToken': localStorage.getItem('authToken'),
-                'id': location.state.application_id
             },
 
             body: formData,

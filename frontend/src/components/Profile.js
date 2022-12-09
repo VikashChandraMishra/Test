@@ -77,6 +77,8 @@ const Profile = () => {
 
                     if (res.success) {
                         setApplications(res.applications);
+                        if (res.applications[0].status === 'submitted')
+                            document.getElementById('apply').disabled = true;
                     }
 
                 }
@@ -161,7 +163,7 @@ const Profile = () => {
                         <div className="col-5">
                         </div>
                         <div className="col-4 text-center">
-                            <button className="btn btn-primary" onClick={apply} >Apply for Positions</button>
+                            <button className="btn btn-primary" id="apply" onClick={apply} >Apply for Positions</button>
                         </div>
                     </div>
 

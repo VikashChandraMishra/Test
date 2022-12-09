@@ -2,7 +2,7 @@ const PGRows = () => {
     return (
         <tr>
             <td>
-                <input type="text" className="form-control pg-year" />
+                <input type="number" className="form-control pg-year" />
             </td>
             <td>
                 <input type="text" className="form-control pg-course" />

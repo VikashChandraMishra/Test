@@ -29,7 +29,7 @@ const applicantSchema = new Schema({
 
     qualification: {
         type: String,
-        enum: ['Graduate', 'Post-Graduate'],
+        enum: ['Post-Graduate'],
         required: true
     },
 
@@ -51,7 +51,6 @@ const applicantSchema = new Schema({
         required: true
     },
 
-
     registrationId: {
         type: String,
         required: true,
@@ -61,6 +60,15 @@ const applicantSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+
+    password_resets: {
+        type: Number,
+        default: 0
+    },
+
+    positionsAppliedFor: {
+        type: [String]
     },
 
 });

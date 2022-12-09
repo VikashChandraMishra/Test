@@ -12,7 +12,7 @@ const ResetPassword = () => {
 
         const { firstname, middlename, lastname, dob } = applicant;
 
-        const response = await fetch('http://13.114.152.118:5000/api/applicant/reset-password', {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/reset-password', {
             method: 'PUT',
 
             headers: {
@@ -25,9 +25,13 @@ const ResetPassword = () => {
         const json = await response.json();
 
         if (json.success === true && json.message === 'password successfully reset') {
+            alert("Password successfully reset. New password has been sent to mail.");
             navigate('/');
         }
-        else alert("Please enter correct credentials");
+        else if (json.success === false && json.message === 'password resets exhausted')
+            alert("Password resets exhausted. Use current password.");
+        else if (json.success === false && json.message === 'incorrect credentials')
+            alert("Please enter correct credentials");
 
         setApplicant({ "firstname": "", "middlename": "", "lastname": "", "dob": "" });
     }

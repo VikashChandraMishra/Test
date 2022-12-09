@@ -57,7 +57,7 @@ router.post('/registration', async (req, res) => {
                     pass: pass
                 }
             });
-        
+
             const mailOptions = {
                 from: process.env.user,
                 to: newApplicant.email,
@@ -73,7 +73,7 @@ router.post('/registration', async (req, res) => {
                 console.log('Failed to send email');
                 console.error(err);
             });
-        
+
 
             res.json({ "success": true, "message": "applicant successfully registered" })
         }
@@ -118,9 +118,41 @@ router.put('/reset-password', async (req, res) => {
         if (!existingUser) {
             return res.status(400).json({ success: false, message: "incorrect credentials" });
         } else {
-            existingUser.password = uuidv4();
-            await existingUser.save();
+            if (existingUser.password_resets >= 4)
+                return res.json({ success: false, "message": "password resets exhausted" });
+            else {
+                existingUser.password_resets += 1;
+                existingUser.password = uuidv4().split('-')[0];
+                await existingUser.save();
+            }
         }
+
+        const mailTransport = nodemailer.createTransport({
+            host: "smtpout.asia.secureserver.net",
+            secure: true,
+            port: 465,
+            auth: {
+                user: user,
+                pass: pass
+            }
+        });
+
+        const mailOptions = {
+            from: process.env.user,
+            to: existingUser.email,
+            subject: `Password Reset For Recruitment Process`,
+            html: `<h3>Credentials</h3>
+            <h4>Registration ID: ${existingUser.registrationId}</h4>
+            <h4>New Password: ${existingUser.password}</h4>`,
+        };
+
+        mailTransport.sendMail(mailOptions).then(() => {
+            console.log('Email sent successfully');
+        }).catch((err) => {
+            console.log('Failed to send email');
+            console.error(err);
+        });
+
 
         res.json({ success: true, "message": "password successfully reset" });
 
@@ -136,7 +168,7 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
     try {
         let id = req.id;
         const applicant = await Applicant.findById(id).select("-password");
-        res.json({ "success": true, "applicant": applicant });
+        return res.json({ "success": true, "applicant": applicant });
     }
     catch (error) {
         console.error(error.message);
@@ -145,22 +177,43 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
 })
 
 
-router.post('/submit-form', fetchApplicant, async (req, res) => {
+router.post('/save-form', fetchApplicant, async (req, res) => {
     try {
-        const newApplication = await Application.create({
-            applicant: req.id,
-            position: req.body.position,
-            general_information: { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address },
-            educational_qualification: req.body.educational_qualification,
-            academic_experience: req.body.academic_experience,
-            industry_experience: req.body.industry_experience,
-            ug_teaching_experience: req.body.ug_teaching_experience,
-            pg_teaching_experience: req.body.pg_teaching_experience,
-            supervision_experience: req.body.supervision_experience,
-            research_papers: req.body.research_papers
-        });
+        const existing_application = await Application.findOne({ "applicant": req.id, "position": req.body.position });
 
-        res.json({ "success": true, "message": "application successfully submitted", "id": newApplication._id })
+        if (!existing_application) {
+            const newApplication = await Application.create({
+                applicant: req.id,
+                position: req.body.position,
+                general_information: { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address },
+                educational_qualification: req.body.educational_qualification,
+                academic_experience: req.body.academic_experience,
+                industry_experience: req.body.industry_experience,
+                ug_teaching_experience: req.body.ug_teaching_experience,
+                pg_teaching_experience: req.body.pg_teaching_experience,
+                supervision_experience: req.body.supervision_experience,
+                research_papers: req.body.research_papers
+            });
+
+            const applicant = await Applicant.findOne({ "id": req.id });
+            applicant.positionsAppliedFor[applicant.positionsAppliedFor.length] = req.body.position;
+            await applicant.save();
+
+            return res.json({ "success": true, "message": "application successfully saved", "id": newApplication._id });
+        } else if (existing_application) {
+            existing_application.position = req.body.position;
+            existing_application.general_information = { correspondence_address: req.body.correspondence_address, permanent_address: req.body.permanent_address };
+            existing_application.educational_qualification = req.body.educational_qualification;
+            existing_application.academic_experience = req.body.academic_experience;
+            existing_application.industry_experience = req.body.industry_experience;
+            existing_application.ug_teaching_experience = req.body.ug_teaching_experience;
+            existing_application.pg_teaching_experience = req.body.pg_teaching_experience;
+            existing_application.supervision_experience = req.body.supervision_experience;
+            existing_application.research_papers = req.body.research_papers;
+            await existing_application.save();
+
+            return res.json({ "success": true, "message": "application successfully saved", "id": existing_application._id });
+        }
 
     } catch (error) {
         console.error(error.message);
@@ -168,6 +221,22 @@ router.post('/submit-form', fetchApplicant, async (req, res) => {
     }
 })
 
+
+router.get('/saved-form-data', fetchApplicant, async (req, res) => {
+    try {
+        const applicant = await Applicant.findOne({ "id": req.id });
+        const position = req.header('position');
+        if (!position) {
+            return res.json({ "success": true, "applicant": applicant });
+        } else if (position) {
+            const application = await Application.findOne({ "applicant": req.id, "position": position });
+            return res.json({ "success": true, "applicant": applicant, "application": application });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error!");
+    }
+})
 
 router.post('/photo-upload', pUpload, async (req, res) => {
 
@@ -194,7 +263,7 @@ router.post('/photo-upload', pUpload, async (req, res) => {
 
 router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     try {
-        const applications = await Application.find({applicant: req.id}).select("position");
+        const applications = await Application.find({ applicant: req.id }).select("position");
         res.json({ "success": true, "applications": applications });
     }
     catch (error) {
@@ -205,9 +274,9 @@ router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
 
 router.post('/fetch-application-data', fetchApplicant, async (req, res) => {
     try {
-        const application = await Application.findOne({_id: req.body.application_id});
-        const applicant = await Applicant.findOne({_id: req.id});
-        res.json({ "success": true, "applicant": applicant,"application": application });
+        const application = await Application.findOne({ _id: req.body.application_id });
+        const applicant = await Applicant.findOne({ _id: req.id });
+        res.json({ "success": true, "applicant": applicant, "application": application });
     }
     catch (error) {
         console.error(error.message);

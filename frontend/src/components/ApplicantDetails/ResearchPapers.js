@@ -3,9 +3,9 @@ const ResearchPapers = (props) => {
 
     return (
         <tr>
-            <td>{paper.title}</td>
-            <td>{paper.details}</td>
-            <td>{paper.remarks}</td>
+            <td>{paper.title ?paper.title:'NIL'}</td>
+            <td>{paper.details ?paper.details:'NIL'}</td>
+            <td>{paper.remarks ?paper.remarks:'NIL'}</td>
         </tr>
     )
 }

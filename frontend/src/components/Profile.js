@@ -44,19 +44,19 @@ const Profile = () => {
                         days = date;
                         months -= 1;
                         switch (parseInt(dob[1])) {
-                            case 1: days = 31 - days;break;
-                            case 2: days = 28 - days;break;   
-                            case 3: days = 31 - days;break;   
-                            case 4: days = 30 - days;break;   
-                            case 5: days = 31 - days;break;   
-                            case 6: days = 30 - days;break;   
-                            case 7: days = 31 - days;break;   
-                            case 8: days = 31 - days;break;   
-                            case 9: days = 30 - days;break;   
-                            case 10: days = 31 - days;break;   
-                            case 11: days = 30 - days;break;   
-                            case 12: days = 31 - days;break;
-                            default: break;   
+                            case 1: days = 31 - days; break;
+                            case 2: days = 28 - days; break;
+                            case 3: days = 31 - days; break;
+                            case 4: days = 30 - days; break;
+                            case 5: days = 31 - days; break;
+                            case 6: days = 30 - days; break;
+                            case 7: days = 31 - days; break;
+                            case 8: days = 31 - days; break;
+                            case 9: days = 30 - days; break;
+                            case 10: days = 31 - days; break;
+                            case 11: days = 30 - days; break;
+                            case 12: days = 31 - days; break;
+                            default: break;
                         }
                     }
                     let age = `${years} years, ${months} months and ${days} days`;
@@ -102,7 +102,6 @@ const Profile = () => {
                 <strong>Registration ID: </strong><span>{applicant.registrationId}</span>
 
                 <div>
-
                     <div className="row border py-2">
                         <div className="col-3">
                             <strong>First Name:</strong>
@@ -142,17 +141,13 @@ const Profile = () => {
                             <strong>Email:</strong>
                             <div>{applicant.email}</div>
                         </div>
-                        <div className="col-4">
-                            <strong>PwBD Status:</strong>
-                            {applicant.PwBD_category ? <div>Applicable</div> : <div>NIL</div>}
-                        </div>
-                    </div>
-
-                    <div className="row border">
                         <div className="col-3">
                             <strong>Gender:</strong>
                             <div>{applicant.gender}</div>
                         </div>
+                    </div>
+
+                    <div className="row border">
                         <div className="col-5">
                             <strong>Age(as on 01-10-2022):</strong>
                             <div>{applicant.age}</div>

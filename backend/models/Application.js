@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const addressSchema = new Schema({
+    address: {type: String},
+    pin: {type: Number},
+    state: {type: String},
+    district: {type: String}
+})
 
 const generalInformationSchema = new Schema({
-    correspondence_address: { type: String },
-    permanent_address: { type: String },
-
+    correspondence_address: addressSchema,
+    permanent_address: addressSchema,
 });
 
 const educationSchema = new Schema({

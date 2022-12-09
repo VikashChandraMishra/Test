@@ -4,11 +4,11 @@ const Education = (props) => {
 
     return (
         <tr>
-            <td>{education.degree}</td>
-            <td>{education.details}</td>
-            <td>{education.grade}</td>
-            <td>{education.subjects}</td>
-            <td>{education.remarks}</td>
+            <td>{education.degree ? education.degree:'NIL'}</td>
+            <td>{education.details ? education.details:'NIL'}</td>
+            <td>{education.grade ? education.grade:'NIL'}</td>
+            <td>{education.subjects ? education.subjects:'NIL'}</td>
+            <td>{education.remarks ? education.remarks:'NIL'}</td>
         </tr>
     )
 }

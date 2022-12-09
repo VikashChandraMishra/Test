@@ -3,10 +3,10 @@ const UGTeachingExp = (props) => {
 
     return (
         <tr>
-            <td>{experience.year}</td>
-            <td>{experience.course}</td>
-            <td>{experience.subjects}</td>
-            <td>{experience.remarks}</td>
+            <td>{experience.year ?experience.year:'NIL'}</td>
+            <td>{experience.course ?experience.course:'NIL'}</td>
+            <td>{experience.degree ?experience.degree:'NIL'}</td>
+            <td>{experience.remarks ?experience.remarks:'NIL'}</td>
         </tr>
     )
 }

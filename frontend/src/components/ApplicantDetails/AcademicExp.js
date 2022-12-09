@@ -3,12 +3,14 @@ const AcademicExp = (props) => {
 
     return (
         <tr>
-            <td>{experience.post}</td>
-            <td>{experience.organization}</td>
-            <td>{experience.duty}</td>
-            <td>{experience.special_duty}</td>
-            <td>{experience.experience}</td>
-            <td>{experience.remarks}</td>
+            <td>{experience.post ? experience.post:'NIL'}</td>
+            <td>{experience.organization ? experience.organization:'NIL'}</td>
+            <td>{experience.begin_date ? experience.begin_date:'NIL'}</td>
+            <td>{experience.end_date ? experience.end_date:'NIL'}</td>
+            <td>{experience.duty ? experience.duty:'NIL'}</td>
+            <td>{experience.special_duty ? experience.special_duty:'NIL'}</td>
+            <td>{experience.experience ? experience.experience:'NIL'}</td>
+            <td>{experience.remarks ? experience.remarks:'NIL'}</td>
         </tr>
     )
 }

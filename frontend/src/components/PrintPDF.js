@@ -45,18 +45,24 @@ const PrintPDF = () => {
                         'authToken': localStorage.getItem('authToken'),
                     },
 
-                    body: JSON.stringify({"application_id":location.state._id})
+                    body: JSON.stringify({ "application_id": location.state._id })
 
                 })
 
                 const json = await response.json();
 
                 if (json.success) {
-                    document.getElementById('name').innerHTML = json.applicant.firstname + ' ' + json.applicant.middlename + ' ' + json.applicant.lastname;
-                    document.getElementById('dob').innerHTML = json.applicant.dob;
-                    document.getElementById('email').innerHTML = json.applicant.email;
-                    document.getElementById('mobile').innerHTML = json.applicant.mobile;
-                    document.getElementById('position').innerHTML = json.application.position;
+                    document.getElementById('registrationId').innerText = json.applicant.registrationId;
+                    document.getElementById('firstname').innerText = json.applicant.firstname;
+                    document.getElementById('middlename').innerText = json.applicant.middlename;
+                    document.getElementById('lastname').innerText = json.applicant.lastname;
+                    document.getElementById('dob').innerText = json.applicant.dob;
+                    document.getElementById('qualification').innerText = json.applicant.qualification;
+                    document.getElementById('category').innerText = json.applicant.category;
+                    document.getElementById('email').innerText = json.applicant.email;
+                    document.getElementById('mobile').innerText = json.applicant.mobile;
+                    document.getElementById('gender').innerText = json.applicant.gender;
+                    document.getElementById('position').innerText = json.application.position;
 
                     setGeneralInformation(json.application.general_information);
                     setEducationalQualifications(json.application.educational_qualification);
@@ -83,39 +89,72 @@ const PrintPDF = () => {
             <div className="container my-3">
                 <button className="btn btn-success" style={{ width: '100px' }} onClick={print} id="print-button" >Print</button>
             </div>
-            <div className="container my-4 px-3" style={{ minWidth: '300px' }} id="application">
+            <div className="container my-4 px-3 border " style={{ minWidth: '300px' }} id="application">
                 <div className="mx-auto">
                     <h3 className="text-center">Application For The Post Of Asst. Professor</h3>
                     <div>
 
                         <div className="my-4">
                             <h5>1. General Information</h5>
-                            <div className="row py-2">
-                                <div className="col-4 d-flex flex-column">
-                                    <span>Area of Preference:</span>
-                                    <span>Name of the Applicant:</span>
-                                    <span>Date of Birth:</span>
-                                    <span>Email:</span>
-                                    <span>Mobile Number:</span>
-                                    <span>Correspondence Address:</span>
-                                    <span>Permanent Address:</span>
+
+                            <div className="row py-2 mx-1">
+                                <div className="col-10">
+                                    <strong>Registration ID: </strong><span id="registrationId"></span>
+                                    <div className="row border py-2">
+                                        <div className="col-4">
+                                            <strong>First Name: </strong>
+                                            <span id="firstname"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Middle Name: </strong>
+                                            <span id="middlename"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Last Name: </strong>
+                                            <span id="lastname"></span>
+                                        </div>
+                                    </div>
+                                    <div className="row border py-2">
+                                        <div className="col-4">
+                                            <strong>Date of Birth: </strong>
+                                            <span id="dob"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Qualification: </strong>
+                                            <span id="qualification"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Category: </strong>
+                                            <span id="category"></span>
+                                        </div>
+                                    </div>
+                                    <div className="row border py-2">
+                                        <div className="col-4">
+                                            <strong>Mobile: </strong>
+                                            <span id="mobile"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Email: </strong>
+                                            <span id="email"></span>
+                                        </div>
+                                        <div className="col-4">
+                                            <strong>Gender: </strong>
+                                            <span id="gender"></span>
+                                        </div>
+                                    </div>
+                                    <div className="row border py-2">
+                                        <div className="col">
+                                            <strong>Area of Preference: </strong>
+                                            <span id="position"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col-4 d-flex flex-column">
-                                    <span id="position"></span>
-                                    <span id="name"></span>
-                                    <span id="dob"></span>
-                                    <span id="email"></span>
-                                    <span id="mobile"></span>
-                                    <span>{generalInformation.correspondence_address}</span>
-                                    <span>{generalInformation.permanent_address}</span>
-                                </div>
-                                <div className="col-4 d-flex flex-column">
-                                    <div className="mx-2 text-center">
-                                        <div>Photo</div>
+
+                                <div className="col-2 d-flex flex-column">
+                                    <div className="mx-2 py-2 text-center">
                                         <img src={`http://127.0.0.1:5000/${images.photo_path}`} height="100px" width="100px" alt="Unable to display" id="photo" />
                                     </div>
-                                    <div className="mx-2 text-center">
-                                        <div>Signature</div>
+                                    <div className="mx-2 py-2 text-center">
                                         <img src={`http://127.0.0.1:5000/${images.signature_path}`} height="60px" width="100px" alt="Unable to display" id="signature" />
                                     </div>
                                 </div>
@@ -125,7 +164,7 @@ const PrintPDF = () => {
 
                         <div className="my-4">
                             <h5>2. Educational Qualification</h5>
-                            <div className="row py-2">
+                            <div className="row py-2 mx-1">
                                 <table>
                                     <thead>
                                         <tr>
@@ -147,12 +186,14 @@ const PrintPDF = () => {
 
                         <div className="my-4">
                             <h5>3. Academic Experience <i>(beginning with the present post/assignment)</i></h5>
-                            <div className="row py-2">
-                                <table border={2}>
+                            <div className="row py-2 mx-1">
+                                <table>
                                     <thead>
                                         <tr>
-                                            <th>Name of the post/ dates of joining and leaving</th>
-                                            <th>Name of the Organization</th>
+                                            <th>Post</th>
+                                            <th>Organization</th>
+                                            <th>Joining Date</th>
+                                            <th>Leaving Date</th>
                                             <th>Description of duties</th>
                                             <th>Special nature of assignment, if any and key actions taken</th>
                                             <th>Experience in years and months</th>
@@ -172,8 +213,8 @@ const PrintPDF = () => {
                         <div className="my-4">
                             <h5>4. Professional/ Industry Experience <i>(On full time basis)</i></h5>
 
-                            <div className="row py-2">
-                                <table border={2}>
+                            <div className="row py-2 mx-1">
+                                <table>
                                     <thead>
                                         <tr>
                                             <th rowSpan={2}>Post</th>
@@ -200,9 +241,9 @@ const PrintPDF = () => {
                         <div className="my-4">
                             <h5>5. Teaching Experience <i>(Please list courses taught at different levels)</i></h5>
 
-                            <div className="row py-2">
+                            <div className="row py-2 mx-1">
                                 <h5>A. Undergraduate Level</h5>
-                                <table border={2}>
+                                <table>
                                     <thead>
                                         <tr>
                                             <th>Year</th>
@@ -219,9 +260,9 @@ const PrintPDF = () => {
                                 </table>
                             </div>
 
-                            <div className="row py-2">
+                            <div className="row py-2 mx-1">
                                 <h5>B. Postgraduate Level</h5>
-                                <table border={2}>
+                                <table>
                                     <thead>
                                         <tr>
                                             <th>Year</th>
@@ -239,9 +280,9 @@ const PrintPDF = () => {
                                 </table>
                             </div>
 
-                            <div className="row py-2">
+                            <div className="row py-2 mx-1">
                                 <h5>C. Students Supervised for M.Phil/ Ph.D or FPM Programme</h5>
-                                <table border={2}>
+                                <table>
                                     <thead>
                                         <tr>
                                             <th>Year</th>
@@ -264,8 +305,8 @@ const PrintPDF = () => {
                         <div className="my-4">
                             <h5>6. Research Papers/ Publication etc. (Additional pages may be appended)</h5>
 
-                            <div className="row py-2">
-                                <table border={2}>
+                            <div className="row py-2 mx-1">
+                                <table>
                                     <thead>
                                         <tr>
                                             <th>Subject/ Title of the Research Paper</th>

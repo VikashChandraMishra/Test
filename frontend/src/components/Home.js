@@ -12,7 +12,7 @@ const Home = () => {
 
         const { registrationId, password } = applicant;
 
-        const response = await fetch('http://127.0.0.1:5000/api/applicant/login', {
+        const response = await fetch('http://65.0.115.124:5000/api/applicant/login', {
             method: 'POST',
 
             headers: {
@@ -23,9 +23,12 @@ const Home = () => {
         })
 
         const json = await response.json();
-        if (json.success) {
+        if (json.success && json.authToken) {
             localStorage.setItem('authToken', json.authToken)
             navigate('/applicant/profile');
+        }
+        else if (json.success && json.message === 'admin verified') {
+            navigate('/admin/dashboard');
         }
         else alert("Invalid credentials!");
 

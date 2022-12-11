@@ -17,7 +17,7 @@ const Status = (props) => {
             <div className="col-2">{_id ? _id : 'NA'}</div>
             <div className="col-3">{position ? position : 'NA'}</div>
             <div className="col-3">{_id ? status.toUpperCase() : 'NA'}</div>
-            <div className="col-3">{_id ? `Application ${status} successfully` : 'NA'}</div>
+            <div className="col-3">{_id ? `Application ${status}` : 'NA'}</div>
             <div className="col-1">{
                 <button className="btn btn-success" disabled={status === 'saved'} onClick={printPDF}>Preview</button>
             }</div>

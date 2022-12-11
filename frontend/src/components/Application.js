@@ -153,7 +153,7 @@ const Application = () => {
     if (localStorage.getItem('authToken')) {
       document.getElementById('check').checked = false;
       const fetchData = async () => {
-        const response = await fetch('http://127.0.0.1:5000/api/applicant/saved-form-data', {
+        const response = await fetch('http://65.0.115.124:5000/api/applicant/saved-form-data', {
           method: 'GET',
 
           headers: {
@@ -397,7 +397,7 @@ const Application = () => {
     }
 
 
-    const response = await fetch('http://127.0.0.1:5000/api/applicant/save-form', {
+    const response = await fetch('http://65.0.115.124:5000/api/applicant/save-form', {
       method: 'POST',
 
       headers: {

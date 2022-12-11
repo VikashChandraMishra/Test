@@ -3,13 +3,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import ResetPassword from "./components/ResetPassword";
-import AdminLogin from "./components/Admin/AdminLogin";
 import Dashboard from "./components/Admin/Dashboard";
 import Profile from "./components/Profile";
 import Application from "./components/Application";
 import ImageUpload from "./components/ImageUpload";
 import PrintPDF from "./components/PrintPDF";
 import Positions from "./components/Positions";
+import AdminView from "./components/Admin/AdminView";
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
             <Route path="/professor-apply" element={<Application />} />
             <Route path="/upload" element={<ImageUpload />} />
             <Route path="/printPDF" element={<PrintPDF />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/fetch-application" element={<AdminView />} />
           </Routes>
         </Router>
     </div>

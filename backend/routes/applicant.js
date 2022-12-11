@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 const Applicant = require('../models/Applicant');
 const Application = require('../models/Application');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY, user, pass, BASE_ID } = process.env;
+const { SECRET_KEY, user, pass, BASE_ID, ADMIN_USERNAME, ADMIN_PASSWORD } = process.env;
 const fetchApplicant = require('../middleware/fetchApplicant');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -89,6 +89,9 @@ router.post('/login', async (req, res) => {
 
     try {
         const { registrationId, password } = req.body;
+        if (registrationId === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            return res.json({ "success": true, "message": "admin verified" });
+        }
 
         const existingUser = await Applicant.findOne({ registrationId, password });
 
@@ -229,7 +232,7 @@ router.post('/save-form', fetchApplicant, async (req, res) => {
 
 router.get('/saved-form-data', fetchApplicant, async (req, res) => {
     try {
-        const applicant = await Applicant.findOne({ "id": req.id });
+        const applicant = await Applicant.findOne({ "_id": req.id });
         const position = req.header('position');
         if (!position) {
             return res.json({ "success": true, "applicant": applicant });
@@ -269,7 +272,11 @@ router.post('/photo-upload', fetchApplicant, pUpload, async (req, res) => {
 router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     try {
         const applications = await Application.find({ applicant: req.id });
-        res.json({ "success": true, "applications": applications });
+        if (applications) {
+            return res.json({ "success": true, "applications": applications });
+        }
+        else
+            return res.json({ "success": false });
     }
     catch (error) {
         console.error(error.message);

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import ApplicationData from "./ApplicationData";
 import '../../styles/list.css'
-import Sidebar from "./Sidebar"
 
 const Dashboard = () => {
 
@@ -9,7 +8,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://127.0.0.1:5000/api/admin/fetch-applications', {
+      const response = await fetch('http://65.0.115.124:5000/api/admin/fetch-applications', {
         method: 'GET',
 
         headers: {
@@ -19,7 +18,6 @@ const Dashboard = () => {
 
       const json = await response.json();
       if (json.success) {
-        // console.log(json.applications[0])
         setApplications(json.applications);
       }
       else alert("Cannot fetch applications' list at the moment!");
@@ -29,15 +27,17 @@ const Dashboard = () => {
 
 
   return (
-    <div className="mx-4 my-3">
-      <div className="row">
+    <div>
+      <div className="my-2 mx-4">
+        <h4 className="text-center">Admin Panel</h4>
         <table id="list">
           <thead>
             <tr>
               <th>Application ID</th>
               <th>Applicant</th>
               <th>Status</th>
-              <th>Documents</th>
+              <th>Documents Uploaded</th>
+              <th>Time of Upload</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +49,6 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-        {/* <Sidebar /> */}
     </div>
   )
 }

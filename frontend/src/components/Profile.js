@@ -16,7 +16,7 @@ const Profile = () => {
 
             const fetchData = async () => {
 
-                const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-data', {
+                const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-data', {
                     method: 'GET',
 
                     headers: {
@@ -63,7 +63,7 @@ const Profile = () => {
                     json.applicant.age = age;
                     setApplicant(json.applicant);
 
-                    const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-application-status', {
+                    const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-application-status', {
                         method: 'GET',
 
                         headers: {
@@ -77,8 +77,11 @@ const Profile = () => {
 
                     if (res.success) {
                         setApplications(res.applications);
-                        if (res.applications[0].status === 'submitted')
-                            document.getElementById('apply').disabled = true;
+                        if (res.applications[0]) {
+                            if (res.applications[0].status !== 'saved')
+                                document.getElementById('apply').disabled = true;
+
+                        }
                     }
 
                 }

@@ -1,23 +1,25 @@
 #sidebar {
-    background-color: white;
-    border-radius: 30px;
-    width: 180px;
-    height: 100vh;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    margin-left: 0px;
+    background-color: black;
+    height: 100%;
 }
 
 #sidebar h3 {
-    color: black;
+    color: white;
 }
 
 
 a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 
 .option {
     text-align: center;
-    width: 150px;
+    width: 200px;
     margin: auto;
 }
 

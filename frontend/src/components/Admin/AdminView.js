@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AcademicExp from "./ApplicantDetails/AcademicExp";
-import Education from "./ApplicantDetails/Education";
-import IndustryExp from "./ApplicantDetails/IndustryExp";
-import PGTeachingExp from "./ApplicantDetails/PGTeachingExp";
-import ResearchPapers from "./ApplicantDetails/ResearchPapers";
-import SupervisionExp from "./ApplicantDetails/SupervisionExp";
-import UGTeachingExp from "./ApplicantDetails/UGTeachingExp";
-import '../../src/styles/table.css';
+import AcademicExp from "../ApplicantDetails/AcademicExp";
+import Education from "../ApplicantDetails/Education";
+import IndustryExp from "../ApplicantDetails/IndustryExp";
+import PGTeachingExp from "../ApplicantDetails/PGTeachingExp";
+import ResearchPapers from "../ApplicantDetails/ResearchPapers";
+import SupervisionExp from "../ApplicantDetails/SupervisionExp";
+import UGTeachingExp from "../ApplicantDetails/UGTeachingExp";
+import '../../styles/table.css';
 
-const PrintPDF = () => {
+const AdminView = () => {
 
     const location = useLocation();
 
@@ -24,75 +24,103 @@ const PrintPDF = () => {
     const [researchPapers, setResearchPapers] = useState([]);
     const [images, setImages] = useState({ "photo_path": "", "signature_path": "" });
 
-    const print = () => {
+    const approve = async (e) => {
+        e.preventDefault();
+        let confirmation = window.prompt("Confirm form approval?(Yes/No)");
+        if (!(confirmation.toUpperCase() === 'yes'.toUpperCase()))
+            return;
+        const response = await fetch('http://65.0.115.124:5000/api/admin/approve-application', {
+            method: 'POST',
 
-        const printButton = document.getElementById('print-button');
-        printButton.style.display = 'none';
-        window.print();
-        printButton.style.display = 'initial';
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({ "application_id": location.state._id })
+        })
+
+        const json = await response.json();
+        if (json.success) {
+            navigate('/admin/dashboard');
+        }
+        else alert("Cannot process requests at the moment!");
+    }
+
+    const reject = async (e) => {
+        e.preventDefault();
+        let confirmation = window.prompt("Confirm form rejection?(Yes/No)");
+        if (!(confirmation.toUpperCase() === 'yes'.toUpperCase()))
+            return;
+        const response = await fetch('http://65.0.115.124:5000/api/admin/reject-application', {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({ "application_id": location.state._id })
+        })
+
+        const json = await response.json();
+        if (json.success) {
+            navigate('/admin/dashboard')
+        }
+        else alert("Cannot process requests at the moment!");
     }
 
     useEffect(() => {
 
-        if (localStorage.getItem('authToken')) {
-            const fetchData = async () => {
-                const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-application-data', {
-                    method: 'POST',
+        const fetchData = async () => {
+            const response = await fetch('http://65.0.115.124:5000/api/admin/send-application-data', {
+                method: 'POST',
 
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'authToken': localStorage.getItem('authToken'),
-                    },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
 
-                    body: JSON.stringify({ "application_id": location.state._id })
+                body: JSON.stringify({ "application_id": location.state._id })
 
-                })
+            })
 
-                const json = await response.json();
+            const json = await response.json();
 
-                if (json.success) {
-                    document.getElementById('registrationId').innerText = json.applicant.registrationId;
-                    document.getElementById('firstname').innerText = json.applicant.firstname;
-                    document.getElementById('middlename').innerText = json.applicant.middlename;
-                    document.getElementById('lastname').innerText = json.applicant.lastname;
-                    document.getElementById('dob').innerText = json.applicant.dob;
-                    document.getElementById('qualification').innerText = json.applicant.qualification;
-                    document.getElementById('category').innerText = json.applicant.category;
-                    document.getElementById('email').innerText = json.applicant.email;
-                    document.getElementById('mobile').innerText = json.applicant.mobile;
-                    document.getElementById('gender').innerText = json.applicant.gender;
-                    document.getElementById('position').innerText = json.application.position;
-                    document.getElementById('total-acad-exp').innerText = json.application.total_academic_experience;
-                    document.getElementById('total-pro-exp').innerText = json.application.total_industry_experience;
+            if (json.success) {
+                document.getElementById('registrationId').innerText = json.applicant.registrationId;
+                document.getElementById('firstname').innerText = json.applicant.firstname;
+                document.getElementById('middlename').innerText = json.applicant.middlename;
+                document.getElementById('lastname').innerText = json.applicant.lastname;
+                document.getElementById('dob').innerText = json.applicant.dob;
+                document.getElementById('qualification').innerText = json.applicant.qualification;
+                document.getElementById('category').innerText = json.applicant.category;
+                document.getElementById('email').innerText = json.applicant.email;
+                document.getElementById('mobile').innerText = json.applicant.mobile;
+                document.getElementById('gender').innerText = json.applicant.gender;
+                document.getElementById('position').innerText = json.application.position;
+                document.getElementById('total-acad-exp').innerText = json.application.total_academic_experience;
+                document.getElementById('total-pro-exp').innerText = json.application.total_industry_experience;
 
-
-                    setEducationalQualifications(json.application.educational_qualification);
-                    setAcademicExperiences(json.application.academic_experience);
-                    setIndustryExperiences(json.application.industry_experience);
-                    setUgTeachingExperiences(json.application.ug_teaching_experience);
-                    setPgTeachingExperiences(json.application.pg_teaching_experience);
-                    setSupervisionExperiences(json.application.supervision_experience);
-                    setResearchPapers(json.application.research_papers);
-                    setImages(json.application.photos);
-                }
-                else navigate('/');
-
+                setEducationalQualifications(json.application.educational_qualification);
+                setAcademicExperiences(json.application.academic_experience);
+                setIndustryExperiences(json.application.industry_experience);
+                setUgTeachingExperiences(json.application.ug_teaching_experience);
+                setPgTeachingExperiences(json.application.pg_teaching_experience);
+                setSupervisionExperiences(json.application.supervision_experience);
+                setResearchPapers(json.application.research_papers);
+                setImages(json.application.photos);
             }
+            else navigate('/');
 
-            fetchData();
-        } else navigate('/');
+        }
+
+        fetchData();
         // eslint-disable-next-line
     }, [])
 
     return (
 
         <div>
-            <div className="container my-3">
-                <button className="btn btn-success" style={{ width: '100px' }} onClick={print} id="print-button" >Print</button>
-            </div>
             <div className="container my-4 px-3 border " style={{ minWidth: '300px' }} id="application">
                 <div className="mx-auto">
-                    <h3 className="text-center">Application For The Post Of Asst. Professor</h3>
                     <div>
 
                         <div className="my-4">
@@ -150,7 +178,6 @@ const PrintPDF = () => {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div className="col-2 d-flex flex-column">
                                     <div className="mx-2 py-2 text-center">
                                         <img src={`http://65.0.115.124:5000/${images.photo_path}`} height="100px" width="100px" alt="Unable to display" id="photo" />
@@ -171,8 +198,8 @@ const PrintPDF = () => {
                                         <tr>
                                             <th>Qualification</th>
                                             <th>Year/University/Institute/Board</th>
-                                            <th>Percentage/ Grade</th>
-                                            <th>Subject(s)/ Specialization</th>
+                                            <th>Percentage/Grade</th>
+                                            <th>Subject(s)/Specialization</th>
                                             <th>Remarks</th>
                                         </tr>
                                     </thead>
@@ -333,11 +360,10 @@ const PrintPDF = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <h5>7. Declaration</h5>
 
-                            <p> I, hereby declare that all the statements/particulars made/furnished in this application are true, complete and correct to the best of my knowledge and belief. I also declare and fully understand that in the event of any information furnished being found false or incorrect at any stage, my application/candidature is liable to be summarily rejected and if I am already appointed,  my services are liable to be terminated without any notice from the post.</p>
-
+                        <div className="my-4 d-flex justify-content-between">
+                            <button className="btn btn-danger" style={{ width: '150px' }} onClick={reject} >Reject</button>
+                            <button className="btn btn-success" style={{ width: '150px' }} onClick={approve} >Approve</button>
                         </div>
 
                     </div>
@@ -347,4 +373,4 @@ const PrintPDF = () => {
     )
 }
 
-export default PrintPDF;
+export default AdminView;

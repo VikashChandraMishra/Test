@@ -23,7 +23,7 @@ const Register = () => {
             return;
         }
 
-        const response = await fetch('http://65.0.115.124:5000/api/applicant/registration', {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/registration', {
             method: 'POST',
 
             headers: {
@@ -51,8 +51,8 @@ const Register = () => {
 
     return (
         <div>
-            <div className="col container text-center my-4" style={{ minWidth: '300px' }}>
-                <div className="card mx-auto">
+            <div className="col container text-center my-4">
+                <div className="card mx-auto" id='register-card'>
                     <p className="card-header">Applicant Registration</p>
                     <div className="card-body">
 
@@ -85,7 +85,7 @@ const Register = () => {
                             </div>
                             <div className="row py-1">
                                 <div className="col form-group">
-                                    <label>Dob DD-MM-YYYY <small style={{ color: 'red' }}>*</small></label>
+                                    <label>Dob <small style={{ color: 'red'}}>*</small></label>
                                     <input className="form-control" type="date" id="dob" name="dob" value={applicant.dob} onChange={onChange} required />
                                 </div>
                                 <div className="col form-group">
@@ -128,7 +128,7 @@ const Register = () => {
                             </div>
 
                             <div className="col">
-                                <button className="btn btn-success btn-sm px-5" type="submit">Submit</button>
+                                <button className="btn btn-success btn-sm" type="submit">Submit</button>
                             </div>
                             <br />
                             <br />

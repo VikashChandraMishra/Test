@@ -14,7 +14,7 @@ const Positions = () => {
     }
 
     return (
-        <div className="container">
+        <div className="container" id="positions">
             <h3 className="text-center my-2">FACULTY APPOINTMENT</h3>
             <p className="d-flex flex-column">
                 <span>Assam Institute of Management(A Government of Assam Society)</span>
@@ -63,7 +63,7 @@ const Positions = () => {
             </div>
             <div className="d-flex flex-column py-4">
                 <form className="form">
-                    <label htmlFor="position"><strong>Area of Preference</strong></label>
+                    <label htmlFor="position"><strong>Areas of Preference<i>(Enter a comma-separated list)</i></strong></label>
                     <input type="text" className="form-control" id="position" required />
                     <button className="btn btn-primary my-4" style={{ width: '160px' }} onClick={apply} >Apply</button>
                 </form>

@@ -16,7 +16,7 @@ const Profile = () => {
 
             const fetchData = async () => {
 
-                const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-data', {
+                const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-data', {
                     method: 'GET',
 
                     headers: {
@@ -63,7 +63,7 @@ const Profile = () => {
                     json.applicant.age = age;
                     setApplicant(json.applicant);
 
-                    const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-application-status', {
+                    const response = await fetch('http://127.0.0.1:5000/api/applicant/fetch-application-status', {
                         method: 'GET',
 
                         headers: {
@@ -97,13 +97,13 @@ const Profile = () => {
 
     return (
         <div>
-            <div className="col container my-4" style={{ minWidth: '300px' }}>
-                <h5 className="text-center "><strong>User Profile:</strong></h5>
+            <div className="col container my-4" id="profile">
+                <h5 className="text-center"><strong>User Profile:</strong></h5>
                 <br />
                 <br />
                 <strong>Registration ID: </strong><span>{applicant.registrationId}</span>
 
-                <div>
+                <div id="details">
                     <div className="row border py-2">
                         <div className="col-3">
                             <strong>First Name:</strong>
@@ -141,7 +141,7 @@ const Profile = () => {
                         </div>
                         <div className="col-5">
                             <strong>Email:</strong>
-                            <div>{applicant.email}</div>
+                            <div id="profile-email">{applicant.email}</div>
                         </div>
                         <div className="col-3">
                             <strong>Gender:</strong>
@@ -163,7 +163,7 @@ const Profile = () => {
                         <div className="col-5">
                         </div>
                         <div className="col-4 text-center">
-                            <button className="btn btn-primary" id="apply" onClick={apply} >Apply for Positions</button>
+                            <button className="btn btn-primary" id="apply" onClick={apply} >Apply</button>
                         </div>
                     </div>
 
@@ -171,7 +171,7 @@ const Profile = () => {
                 <br />
                 <br />
                 <h5><strong>Application Status:</strong></h5>
-                <div>
+                <div id="status">
                     <div className="row bg-dark text-white text-center py-1">
                         <strong className="col-2">Application ID</strong>
                         <strong className="col-3">Position</strong>

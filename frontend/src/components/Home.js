@@ -12,7 +12,7 @@ const Home = () => {
 
         const { registrationId, password } = applicant;
 
-        const response = await fetch('http://65.0.115.124:5000/api/applicant/login', {
+        const response = await fetch('http://127.0.0.1:5000/api/applicant/login', {
             method: 'POST',
 
             headers: {
@@ -72,7 +72,7 @@ const Home = () => {
                                 <Link to="/register" className="btn btn-primary btn-sm">Register</Link>
                             </div>
                             <div className="col">
-                                <Link to="/reset-password" className="btn btn-primary btn-sm">Reset Password</Link>
+                                <Link to="/reset-password" className="btn btn-primary btn-sm" id='login-reset-pass-btn' >Reset Password</Link>
                             </div>
                         </div>
                     </div>

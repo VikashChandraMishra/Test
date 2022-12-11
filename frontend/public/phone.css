@@ -1,0 +1,117 @@
+/* NAVBAR */
+
+#heading {
+    width: 150px;
+    font-size: 1rem;
+}
+
+#ham-burger-button {
+    width: 30px;
+    height: 30px;
+    padding: 0px 0px;
+}
+
+#logo {
+    width: 50px;
+}
+
+#logo img {
+    width: 30px;
+    height: 30px;
+}
+
+/* REGISTER, LOGIN, RESET_PASSWORD */
+
+.btn {
+    font-size: 0.7rem;
+}
+
+input {
+    height: 25px;
+}
+
+.card {
+    min-width: 270px;
+    font-size: 0.7rem;
+}
+
+#register-card .form-group {
+    padding-left: 9px;
+    padding-right: 0px;
+}
+
+#register-card .form-control {
+    font-size: 0.6rem;
+    width: 65px;
+}
+
+#reset-password-card .form-control {
+    font-size: 0.7rem;
+}
+
+#login-reset-pass-btn {
+    width: 100px;
+}
+
+/* PROFILE */
+#profile {
+    min-width: 290px;
+    overflow-x: hidden;
+    font-size: 0.8rem;
+}
+
+#details {
+    padding-left: 2px;
+    padding-right: 2px;
+    min-width: 280px;
+}
+
+
+#details .col-4 {
+    width: 50px;
+}
+
+#profile-email {
+    font-size: 0.6rem;
+}
+
+#apply {
+    width: 70px;
+    margin-right: 50px;
+}
+
+#status {
+    width: 280px;
+    font-size: 0.6rem;
+}
+
+#status .col-3 {
+    padding: 0px;
+    width: 58px;
+}  
+
+#status .col-2 {
+    padding: 0px;
+    width: 55px;
+}
+
+#status .col-1 button {
+    padding: 3px 0px;
+    width: 40px;
+}
+
+/* POSITIONS */
+
+#positions {
+    font-size: 0.8rem;
+}
+
+/* APPLICATIONS */
+
+/* #application-card {
+    width: 290px;
+}
+
+#application-card .form-control {
+    width: 30px;
+} */

@@ -17,11 +17,11 @@ const Navbar = () => {
         <div>
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid row">
-                    <Link className="navbar-brand col-4 d-flex justify-content-end" to="/">
+                    <Link className="navbar-brand col-4 d-flex justify-content-end" id='logo' to="/">
                         <img src={Logo} width={50} height={50} alt="unable to display logo at the moment" />
                     </Link>
-                    <h4 className='col-4 text-center'>ASSAM INSTITUTE OF MANAGEMENT</h4>
-                    <button className="navbar-toggler col-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <h4 className='col-4 text-center' id='heading'>ASSAM INSTITUTE OF MANAGEMENT</h4>
+                    <button className="navbar-toggler col-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id='ham-burger-button' >
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse col-2" id="navbarSupportedContent" >

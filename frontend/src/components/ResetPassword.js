@@ -43,7 +43,7 @@ const ResetPassword = () => {
 
     return (
         <div className="container d-flex justify-content-center">
-            <div className='card col-4 my-4'>
+            <div className='card col-4 my-4' id='reset-password-card'>
                 <p className="card-header text-center">Reset Password</p>
                 <div className="card-body text-center">
                     <form className="form bg-light py-1 px-1" id="reset-password-form" onSubmit={handleSubmit}>

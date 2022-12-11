@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Applicant = require('../models/Applicant');
+// const Applicant = require('../models/Applicant');
+const Application = require('../models/Application');
 
 router.post('/login', (req, res) => {
     const { ADMIN_USERNAME, ADMIN_PASSWORD } = process.env;
@@ -12,10 +13,10 @@ router.post('/login', (req, res) => {
         res.json({ "success": false, "message": "admin not verified" })
 })
 
-router.get('/fetch-applicant-list', async (req, res) => {
+router.get('/fetch-applications', async (req, res) => {
     try {
-        const applicants = await Applicant.find();
-        res.json({"success": true, applicants});
+        const applications = await Application.find();
+        res.json({"success": true, applications});
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error!");

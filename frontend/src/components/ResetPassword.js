@@ -12,7 +12,7 @@ const ResetPassword = () => {
 
         const { firstname, middlename, lastname, dob } = applicant;
 
-        const response = await fetch('http://3.111.49.143:5000/api/applicant/reset-password', {
+        const response = await fetch('http://65.0.115.124:5000/api/applicant/reset-password', {
             method: 'PUT',
 
             headers: {

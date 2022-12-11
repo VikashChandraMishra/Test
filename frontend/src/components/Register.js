@@ -23,7 +23,7 @@ const Register = () => {
             return;
         }
 
-        const response = await fetch('http://3.111.49.143:5000/api/applicant/registration', {
+        const response = await fetch('http://65.0.115.124:5000/api/applicant/registration', {
             method: 'POST',
 
             headers: {

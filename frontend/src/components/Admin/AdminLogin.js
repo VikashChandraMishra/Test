@@ -13,7 +13,7 @@ const AdminLogin = () => {
 
         const { username, password } = admin;
 
-        const response = await fetch('http://13.114.152.118:5000/api/admin/login', {
+        const response = await fetch('http://127.0.0.1:5000/api/admin/login', {
             method: 'POST',
 
             headers: {

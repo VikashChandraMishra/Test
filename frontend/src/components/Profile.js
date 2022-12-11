@@ -16,7 +16,7 @@ const Profile = () => {
 
             const fetchData = async () => {
 
-                const response = await fetch('http://3.111.49.143:5000/api/applicant/fetch-data', {
+                const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-data', {
                     method: 'GET',
 
                     headers: {
@@ -63,7 +63,7 @@ const Profile = () => {
                     json.applicant.age = age;
                     setApplicant(json.applicant);
 
-                    const response = await fetch('http://3.111.49.143:5000/api/applicant/fetch-application-status', {
+                    const response = await fetch('http://65.0.115.124:5000/api/applicant/fetch-application-status', {
                         method: 'GET',
 
                         headers: {

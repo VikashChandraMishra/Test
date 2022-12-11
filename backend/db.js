@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoURI = 'mongodb://localhost:27017/asrlm?readPreference=primary&appname=MongoDB%20Compass&ssl=false';
+const {mongoURI} = process.env;
 
 const connectToMongo = () => {
     mongoose.connect(mongoURI, () => {

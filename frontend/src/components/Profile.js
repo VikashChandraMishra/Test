@@ -78,9 +78,7 @@ const Profile = () => {
                     if (res.success) {
                         setApplications(res.applications);
                         if (res.applications[0]) {
-                            if (res.applications[0].status !== 'saved')
-                                document.getElementById('apply').disabled = true;
-
+                            document.getElementById('apply').disabled = true;
                         }
                     }
 

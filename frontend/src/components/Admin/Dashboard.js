@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://127.0.0.1:5000/api/admin/fetch-applications', {
+      const response = await fetch('http://65.0.115.124:5000/api/admin/fetch-applications', {
         method: 'GET',
 
         headers: {

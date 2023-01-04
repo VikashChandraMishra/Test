@@ -90,7 +90,7 @@ const applicationSchema = new Schema({
     pg_teaching_experience: [pgteachingExperienceSchema],
     supervision_experience: [supervisionExperienceSchema],
     research_papers: [researchPaperSchema],
-    status: {type: String},
+    status: {type: String, default: "unsaved"},
     uploaded: {type: Date, default: Date.now()},
 });
 

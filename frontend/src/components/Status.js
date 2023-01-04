@@ -8,6 +8,10 @@ const Status = (props) => {
 
     const navigate = useNavigate(null);
 
+    const edit = () => {
+        navigate('/professor-apply', { state: { "position": position } })
+    }
+
     const printPDF = () => {
         navigate('/printPDF', { state: { _id: _id } });
     }
@@ -18,9 +22,13 @@ const Status = (props) => {
             <div className="col-3">{position ? position : 'NA'}</div>
             <div className="col-3">{_id ? status.toUpperCase() : 'NA'}</div>
             <div className="col-3">{_id ? `Application ${status}` : 'NA'}</div>
-            <div className="col-1">{
-                <button className="btn btn-success" disabled={status === 'saved'} onClick={printPDF}>Preview</button>
-            }</div>
+            <div className="col-1">
+                {
+                    status === 'saved' ?
+                        <button className="btn btn-success" onClick={edit}>Edit</button>
+                        :
+                        <button className="btn btn-success" onClick={printPDF}>Print</button>
+                }</div>
         </div>
     )
 }

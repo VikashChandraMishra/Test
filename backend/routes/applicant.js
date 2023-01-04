@@ -29,8 +29,12 @@ router.post('/registration', async (req, res) => {
             res.json({ "success": false, "message": "applicant already exists" });
         }
         else {
+
             const applicantCount = await Applicant.countDocuments({});
-            const registrationId = BASE_ID + applicantCount;
+            const registrationId = parseInt(BASE_ID) + applicantCount;
+
+            console.log(registrationId);
+            
             const newApplicant = await Applicant.create({
                 firstname: req.body.firstname,
                 middlename: req.body.middlename,
@@ -43,9 +47,6 @@ router.post('/registration', async (req, res) => {
                 gender: req.body.gender,
                 registrationId: registrationId,
                 password: req.body.dob.split('-')[0] + req.body.dob.split('-')[1] + req.body.dob.split('-')[2],
-                disabilityPercentage: req.body.disabilityPercentage,
-                PwBD_UDID: req.body.PwBD_UDID,
-                PwBD_category: req.body.PwBD_category,
             });
 
             const mailTransport = nodemailer.createTransport({

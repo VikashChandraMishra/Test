@@ -26,15 +26,14 @@ router.post('/registration', async (req, res) => {
         const existing_applicant = await Applicant.findOne({ $or: [{ mobile: req.body.mobile }, { email: req.body.email }] });
 
         if (existing_applicant) {
-            res.json({ "success": false, "message": "applicant already exists" });
+            return res.json({ "success": false, "message": "applicant already exists" });
         }
         else {
 
             const applicantCount = await Applicant.countDocuments({});
             const registrationId = parseInt(BASE_ID) + applicantCount;
 
-            console.log(registrationId);
-            
+
             const newApplicant = await Applicant.create({
                 firstname: req.body.firstname,
                 middlename: req.body.middlename,
@@ -62,10 +61,13 @@ router.post('/registration', async (req, res) => {
             const mailOptions = {
                 from: process.env.user,
                 to: newApplicant.email,
-                subject: `Login Credentials For Recruitment Process`,
-                html: `<h3>Credentials</h3>
+                subject: `Login Credentials For Appointment Process`,
+                html: `<h3>Below are the registration ID and password for AIM Faculty Appointment</h3>
                 <h4>Registration ID: ${newApplicant.registrationId}</h4>
-                <h4>Password: ${newApplicant.password}</h4>`,
+                <h4>Password: ${newApplicant.password}</h4>
+                <br />
+                <h4>Click on the below link to log in:</h4>
+                <h4>http://aimguwahati-recruitment.in/</h4>`,
             };
 
             mailTransport.sendMail(mailOptions).then(() => {
@@ -101,12 +103,12 @@ router.post('/login', async (req, res) => {
         }
         else {
             const authToken = jwt.sign(existingUser.id, SECRET_KEY);
-            res.json({ "success": true, "authToken": authToken });
+            return res.json({ "success": true, "authToken": authToken });
         }
 
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 
 })
@@ -145,9 +147,12 @@ router.put('/reset-password', async (req, res) => {
             from: process.env.user,
             to: existingUser.email,
             subject: `Password Reset For Recruitment Process`,
-            html: `<h3>Credentials</h3>
+            html: `<h3>Below are the registration ID and new password for AIM Faculty Appointment</h3>
             <h4>Registration ID: ${existingUser.registrationId}</h4>
-            <h4>New Password: ${existingUser.password}</h4>`,
+            <h4>New Password: ${existingUser.password}</h4>            
+            <br />
+            <h4>Click on the below link to log in:</h4>
+            <h4>http://aimguwahati-recruitment.in/</h4>`,
         };
 
         mailTransport.sendMail(mailOptions).then(() => {
@@ -176,7 +181,7 @@ router.get('/fetch-data', fetchApplicant, async (req, res) => {
     }
     catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 })
 
@@ -243,7 +248,7 @@ router.get('/saved-form-data', fetchApplicant, async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 })
 
@@ -261,11 +266,11 @@ router.post('/photo-upload', fetchApplicant, pUpload, async (req, res) => {
 
         }
 
-        res.json({ success: true, "message": "images successfully uploaded" });
+        return res.json({ success: true, "message": "images successfully uploaded" });
 
     } catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 
 })
@@ -281,7 +286,7 @@ router.get('/fetch-application-status', fetchApplicant, async (req, res) => {
     }
     catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 })
 
@@ -289,11 +294,11 @@ router.post('/fetch-application-data', fetchApplicant, async (req, res) => {
     try {
         const application = await Application.findOne({ _id: req.body.application_id });
         const applicant = await Applicant.findOne({ _id: req.id });
-        res.json({ "success": true, "applicant": applicant, "application": application });
+        return res.json({ "success": true, "applicant": applicant, "application": application });
     }
     catch (error) {
         console.error(error.message);
-        res.status(500).send("Internal Server Error!");
+        return res.status(500).send("Internal Server Error!");
     }
 })
 

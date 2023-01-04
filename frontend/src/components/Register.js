@@ -58,7 +58,7 @@ const Register = () => {
 
                         <p className="text-start">Fields marked with <small style={{ color: 'red' }}>*</small> are mandatory. Read the below instructions carefully, before filling the form:
                             <br />
-                            1. Candidate has to fill in the below mentioned details to receive the User ID and Password.
+                            1. Candidate has to fill in the below mentioned details to receive the Registration ID and Password.
                             <br />
                             2. Candidate will receive the Registration Id and Password on the registered email address.
                             <br />
@@ -91,7 +91,7 @@ const Register = () => {
                                 <div className="col form-group">
                                     <label>Category <small style={{ color: 'red' }}>*</small></label>
                                     <select className="form-control" type="text" id="category" name="category" value={applicant.category} onChange={onChange} required >
-                                        <option> -- select an option -- </option>
+                                        <option value=""> -- select an option -- </option>
                                         <option value="UR">UR</option>
                                         <option value="SC">SC</option>
                                         <option value="OBC/MOBC">OBC/MOBC</option>
@@ -103,7 +103,7 @@ const Register = () => {
                                 <div className="col form-group">
                                     <label>Qualification <small style={{ color: 'red' }}>*</small></label>
                                     <select className="form-control" type="text" id="qualification" name="qualification" value={applicant.qualification} onChange={onChange} required >
-                                        <option> -- select an option -- </option>
+                                        <option value=""> -- select an option -- </option>
                                         <option value="Post-Graduate">Post-Graduate</option>
                                     </select>
                                 </div>
@@ -119,7 +119,7 @@ const Register = () => {
                                 </div>
                                 <div className="col form-group"><label>Gender <small style={{ color: 'red' }}>*</small></label>
                                     <select className="form-control" type="text" id="gender" name="gender" value={applicant.gender} onChange={onChange} required >
-                                        <option> -- select an option -- </option>
+                                        <option value=""> -- select an option -- </option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Others">Others</option>

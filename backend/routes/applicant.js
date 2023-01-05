@@ -7,12 +7,17 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY, user, pass, BASE_ID, ADMIN_USERNAME, ADMIN_PASSWORD } = process.env;
 const fetchApplicant = require('../middleware/fetchApplicant');
 const multer = require('multer');
+const fs = require('fs');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname)
+        var num;
+        fs.readdir('uploads/', (err, files) => {
+            num = files.length + 3421 + 1;
+            cb(null, String(num) + file.originalname)
+        });
     },
 });
 const upload = multer({ storage: storage });
